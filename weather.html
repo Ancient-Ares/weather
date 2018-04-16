@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <title>天气预报</title>
+    <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="css/weathers.css">
+    <script type="text/javascript" src="js/base-loading.js"></script>
+    <style>
+        .main {padding-bottom: 60px;}
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #fff;
+            shape-rendering: crispEdges;
+        }
+
+        .tick {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 0.5;
+        }
+
+        .line {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.5;
+        }
+
+        .dot {
+            fill: white;
+            stroke-width: 1.5;
+        }
+
+        svg text {
+            height: 20px;
+            width: 20px;
+            fill: #fff;
+            stroke: #fff;
+            stroke-width: .5;
+            font-size: 14px;
+        }
+
+        #maxTemp .dot {
+            fill: #e5e932;
+            stroke: #688e56;
+            stroke-width: 1.5;
+        }
+
+        #maxTemp .line {
+            stroke: #688e56;
+        }
+
+        #minTemp .dot {
+            fill: #0473bb;
+            stroke: #00629f;
+            stroke-width: 1.5;
+        }
+
+        #minTemp .line {
+            stroke: #00629f;
+        }
+
+        .pushMsg {display: none;}
+
+        /* background: rgb(69, 106, 112) rgb(60, 139, 255) */
+        .botNav {display: flex;height: 60px;text-align: center;position: fixed;bottom: 0;left: 0;width: 100%;color: #fff;font-size: .22rem;border-top: 1px solid rgba(255, 255, 255, 0.16);background: rgba(38, 39, 41, 1);z-index: 20;border-radius: 6px 6px 0 0;overflow: hidden;}
+
+        .botNav > a {display: block;flex: 1;border-left: 1px solid #ddd;box-sizing: border-box;padding-top: 5px;color: #fff;}
+
+        .botNav > a:first-child {border-left: none;}
+
+        .botNav > a.active {background: rgba(0, 0, 0, .1)}
+
+        .botNav img {height: 32px;}
+
+        .address .area {display: block;height: 100%;}
+
+        .areaBg {position: fixed;top:0;left:0;z-index:99;height: 100%;width: 100%;background: rgb(241,241,241);display: none;}
+        .areaBg h3 {text-align: center;color:#333;font-size: 18px;margin-top:20px;}
+        .areaBg .addressList {position: absolute;top: 50%;left:50%;z-index:100;text-align:center;width:200px;height:450px;margin-left:-100px;margin-top:-200px;color:#333;font-size: 0.26rem;padding:10px;overflow-y: auto;box-sizing: border-box}
+        .areaBg .addressList p {margin-bottom: 10px;border:1px solid #333;border-radius: 6px;padding:5px 10px;}
+    </style>
+</head>
+<body>
+
+<div class="main bgs">
+    <div class="insideBgs">
+        <div class="weather-position-address">
+            <span class="goBack"></span>
+            <h2 class="address">
+                <span class="area">泰州市</span>
+            </h2>
+            <p class="goMap">实况地图</p>
+            <!--<time class="weather-data iconli" style="margin-top: 0px;color:#fff;"></time>-->
+        </div>
+        <div class="pushMsg">
+            <p></p>
+            <span class="close">x</span>
+        </div>
+        <div class="todayWether">
+            <div class="tw-top">
+                <div class="twIcon housr_icons"></div>
+                <span class="twText"></span>
+            </div>
+            <div class="tw-bottom clearfix">
+                <div class="temp">
+                    <span class="tempNum"></span>
+                    <span class="tempDu">°C</span>
+                </div>
+                <div class="tempInfo">
+                    <p class="p1"></p>
+                    <p class="p2">空气湿度：<span></span> %</p>
+                    <p class="p3">实时气压：<span></span> Pa</p>
+                </div>
+            </div>
+        </div>
+        <div class="weatherOther">
+            <div class="other-top">
+                <div class="otherItem1">
+                    <div class="div1">
+                        <img src="images/otherItem1.png" alt="空气温度">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">空气温度</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                    </p>
+                </div>
+                <div class="otherItem2">
+                    <div class="div1">
+                        <img src="images/otherItem2.png" alt="降水">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">降水</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                </div>
+                <div class="otherItem3">
+                    <div class="div1">
+                        <img src="images/otherItem3.png" alt="气压">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">气压</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="other-bottom">
+                <div class="otherItem4">
+                    <div class="div1">
+                        <img src="images/otherItem4.png" alt="空气湿度">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">空气湿度</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                </div>
+                <div class="otherItem5">
+                    <div class="div1">
+                        <img src="images/otherItem5.png" alt="风力">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">风力</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                </div>
+                <div class="otherItem6">
+                    <div class="div1">
+                        <img src="images/otherItem6.png" alt="土壤温度">
+                    </div>
+                    <div class="div2">
+                        <p class="p2-top">土壤温度</p>
+                        <p class="p2-bot"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weatherAll">
+            <!-- tong 72hours -->
+            <div class="hours72" id="hours72">
+                <h1>逐3小时预报</h1>
+                <!-- Swiper -->
+                <div class="swiper-containerLi swiper-container-horizontal swiper-container-free-mode">
+                    <div class="swiper-wrapper swiper-wrapper1">
+                        <!-- lodding -->
+                    </div>
+                </div>
+            </div>
+            <!-- tong 72hours -->
+            <div class="tianqicontDiv clearfix">
+                <div class="tianqicont">
+                    <div class="swiper-wrapper swiper-wrapper2">
+                        <!-- 最高气温折现 -->
+                        <div id="maxTemp"></div>
+                        <!-- 最低气温折现 -->
+                        <div id="minTemp"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="areaBg">
+        <h3>选择地区</h3>
+        <div class="addressList"></div>
+    </div>
+</div>
+<div class="botNav">
+    <a href="javascript:location.reload();" class="active nav1">
+        <p><img src="images/nav1.png" alt="天气实况"></p>
+        <p>天气实况</p>
+    </a>
+    <a href="agriInfo.html" class="nav2">
+        <p><img src="images/nav2.png" alt="气象惠农"></p>
+        <p>气象惠农</p>
+    </a>
+    <a href="monitor.html" class="nav3">
+        <p><img src="images/nav3.png" alt="智慧大棚"></p>
+        <p>智慧大棚</p>
+    </a>
+    <a href="videoList.html" class="nav4">
+        <p><img src="images/nav4.png" alt="灾情直报"></p>
+        <p>灾情直报</p>
+    </a>
+</div>
+
+<script src="js/d3.v3.js"></script>
+<script src="js/swiper.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/jqueryColor-2.1.2.min.js"></script>
+<script src="js/base.js"></script>
+<script>
+    // 移动端 url - userID
+    localStorage.removeItem('userId')
+    var url = window.location.href;
+    var paraString = url.substring(url.indexOf("?") + 1, url.length).split("=");
+    if (paraString[1]) {
+        localStorage.setItem('userId', paraString[1])
+    }
+
+    // 当天数据
+    $.ajax(baseUrl + 'live/getCurrWeatherInfoByAreaCode.do', {
+        type: 'GET',
+        dataType: 'json',
+        timeout: 10000,
+        data: {
+            areaCode: 3212
+        },
+        success: function (data) {
+            if (data.status === 'true') {
+                var data = data.data
+                var thisTime = data.forecastTime.substring(11, 13)
+                var timeNow = parseInt(thisTime) < 19 && parseInt(thisTime) > 5 ? 'd' : 'n'
+                $(".twIcon").addClass(`${timeNow}${data.weatherPhen}`)
+                if (timeNow === 'd') {
+                    $(".twText").text(data.weatherPhenName)
+                    $(".tempInfo .p1").html(`${data.windDirectionName}：${data.windPowerName}`)
+                } else {
+                    $(".twText").text(data.weatherPhenName2)
+                    $(".tempInfo .p1").html(`${data.windDirectionName2}：${data.windPowerName2}`)
+                }
+                $(".tempNum").text(data.temperature)
+                $(".tempInfo .p2 span").text(data.rHU)
+                $(".tempInfo .p3 span").text(data.pRS)
+                $(".otherItem1 .div2 .p2-bot").text(`${data.temperature} °C`)
+                $(".otherItem2 .div2 .p2-bot").text(`${data.pRE_h} mm`)
+                $(".otherItem3 .div2 .p2-bot").text(`${data.pRS} Pa`)
+                $(".otherItem4 .div2 .p2-bot").text(`${data.rHU} %`)
+                $(".otherItem5 .div2 .p2-bot").text(data.windPowerName)
+                $(".otherItem6 .div2 .p2-bot").text(`${data.gST_cm} °C`)
+                // 推送
+                if (data.alarmMsg && data.alarmMsg !== " ") {
+                    $(".pushMsg p").text(data.alarmMsg)
+                    $(".pushMsg").css("display", "block")
+                } else {
+                    $(".pushMsg").css("display", "none")
+                }
+            } else {
+                alert(data.msg)
+            }
+        },
+        error: function (err) {
+            alert('请求失败，稍后再试!')
+        }
+    })
+
+
+    // swiper
+    var swiper = new Swiper('#hours72 .swiper-containerLi', {
+        slidesPerView: 6.5,
+        spaceBetween: 0,
+        initialSlide: 0,
+        freeMode: true,
+        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true //修改swiper的父元素时，自动初始化swiper
+    })
+    var swiper2 = new Swiper('.tianqicontDiv .tianqicont', {
+        slidesPerView: 4,
+        spaceBetween: 0,
+        initialSlide: 0,
+        freeMode: true,
+        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true //修改swiper的父元素时，自动初始化swiper
+    })
+
+    // 时间
+    // $(".weather-data").click(function () {
+    //     window.location.reload();
+    // })
+    // var dataWindTime = new Date()
+    // $(".weather-data").html(`${dataWindTime.getHours()}:${dataWindTime.getMinutes()} 更新`)
+
+    // 绘制气温折线图
+    function drawSvg(el, dataArr, state) {
+        var deviceWidth = innerWidth || 375;
+        var weatherListWidth = deviceWidth / 4;
+        var domainArr = []
+        $(el).css("left", weatherListWidth / 2 - 5 + "px")
+        dataArr.forEach(function (v, i) {
+            domainArr.push(v[1])
+        })
+        domainArr = domainArr.sort(function (a, b) {
+            return a - b
+        })
+        var x = d3.time.scale()
+            .domain([new Date(dataArr[0]), new Date(dataArr[dataArr.length - 1])])
+            .range([5, weatherListWidth * 3]);
+
+        var y = d3.scale.linear()
+            .domain([domainArr[0] - 10, domainArr[domainArr.length - 1] + 10])
+            .range([90, 0]);
+
+        var line = d3.svg.line()
+            .interpolate("monotone")
+            .x(function (d) {
+                return x(d[0]);
+            })
+            .y(function (d) {
+                return y(d[1]);
+            })
+
+        var svg = d3.select(el).append("svg")
+            .datum(dataArr)
+            .attr("width", weatherListWidth * 4)
+            .attr("height", "90px")
+            .append("g")
+
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", line);
+
+        svg.selectAll(".dot")
+            .data(dataArr)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("cx", line.x())
+            .attr("cy", line.y())
+            .attr("r", 3.5)
+
+        svg.selectAll(".text")
+            .data(dataArr)
+            .enter().append("text")
+            .attr("x", line.x())
+            .attr("y", line.y())
+            .attr("class", "text")
+            .text(function (value) {
+                return value[1] + "°"
+            })
+            .style("transform", "translate(-5px, -10px)")
+
+    }
+
+    function checkDay() {
+        var today = new Date().getDay()
+        if (today === 1) {
+            return ['今天', '周二', '周三', '周四']
+        } else if (today === 2) {
+            return ['今天', '周三', '周四', '周五']
+        } else if (today === 3) {
+            return ['今天', '周四', '周五', '周六']
+        } else if (today === 4) {
+            return ['今天', '周五', '周六', '周日']
+        } else if (today === 5) {
+            return ['今天', '周六', '周日', '周一']
+        } else if (today === 6) {
+            return ['今天', '周日', '周一', '周二']
+        } else {
+            return ['今天', '周一', '周二', '周三']
+        }
+    }
+
+    function getTemp(areaCode) {
+        $.ajax(baseUrl + 'forecast/getForecastWeatherInfo.do', {
+            type: 'GET',
+            dataType: 'json',
+            timeout: 10000,
+            data: {
+                areaCode: areaCode
+            },
+            success: function (data) {
+                if (data.status === 'true') {
+                    var dataView = data['24h']
+                    var dataWether = data['24h'][Object.keys(dataView)[0]]['1001001'],
+                        dataThree = data['3h'][Object.keys(dataView)[0]]['1001001'], dataArr1 = [], dataArr2 = [],
+                        now = new Date(),
+                        year = now.getFullYear(), month = now.getMonth() + 1, day1 = now.getDate(),
+                        day2 = now.getDate(),
+                        inHtml = '', threeHtml = '';
+                    dataWether.forEach((v, k) => {
+                        dataArr1.push([new Date(year, month, day1++), parseInt(v.maxTemp)])
+                        dataArr2.push([new Date(year, month, day2++), parseInt(v.minTemp)])
+                    })
+                    $("#maxTemp").html("")
+                    $("#minTemp").html("")
+                    drawSvg('#maxTemp', dataArr1, 'max')
+                    drawSvg('#minTemp', dataArr2, 'min')
+                    // 四天天气
+                    for (var i = 0, lens = dataWether.length; i < lens; i++) {
+                        if (i === 0) {
+                            $(".bgs").css("background-image", "url(images/d" + dataWether[i].dayWeatherPhen + ".jpg)")
+                        }
+                        inHtml += `<div class="weatherList swiper-slide">
+                            <div class="weather-up-li weather-up">
+                                <time class="dayTime">${checkDay()[i]}</time>
+                                <time class="dayWindDirection">${dataWether[i].dayWindDirectionName}</time>
+                                <time class="dayWindPower">${dataWether[i].dayWindPowerName}</time>
+                                <time class="day_icon">${dataWether[i].dayWeatherPhenName}</time>
+                                <i class="svnicon housr_icons d${dataWether[i].dayWeatherPhen}"></i>
+                            </div>
+                            <div class="weather-up-li weather-down">
+                                <i class="svnicon housr_icons n${dataWether[i].nightWeatherPhen}"></i>
+                                <time class="day_icon">${dataWether[i].dayWeatherPhenName}</time>
+                                <time class="nightWindDirection">${dataWether[i].nightWindDirectionName}</time>
+                                <time class="nightWindPower">${dataWether[i].nightWindPowerName}</time>
+                            </div>
+                        </div>`
+                    }
+                    $(".swiper-wrapper2").prepend(inHtml)
+                    // 3小时预报
+                    for (var r = 0, rens = dataThree.length; r < rens; r++) {
+                        var thisTime = dataThree[r].forecastTime.substring(8, 10)
+                        threeHtml += ` <div class="swiper-slide">
+                                        <div class="timeDate">${dataThree[r].forecastTime.substring(4, 6)}/${dataThree[r].forecastTime.substring(6, 8)}</div>
+                                        <div class="timeLi">${thisTime} 时</div>
+                                        <i class="svnicon housr_icons ${parseInt(thisTime) < 19 && parseInt(thisTime) > 5 ? 'd' : 'n'}${dataThree[r].weatherPhen}"></i>
+                                        <div class="tempLi">${dataThree[r].temperature}°</div>
+                                    </div>`
+                    }
+                    $(".swiper-wrapper1").html(threeHtml)
+                } else {
+                    alert(data.msg)
+                }
+            },
+            error: function (err) {
+                alert('请求失败，稍后再试!')
+            }
+        })
+    }
+    window.onload=function(){
+        getTemp('3212')
+    }
+
+    // 关闭预警
+    $(".close").click(function () {
+        $(".pushMsg").fadeOut()
+    });
+
+    // 地图
+    $(".goMap").click(function () {
+        if ($.os.ios) {
+            // ios
+            console.log('1')
+        } else {
+            // android
+            toback.toMap()
+        }
+    })
+
+    // 获取地区
+    $.ajax(baseUrl + 'common/getAllRegisterArea.do', {
+        type: 'GET',
+        dataType: 'json',
+        timeout: 10000,
+        success: function (data) {
+            if (data.status === 'true') {
+                var data = data.data;
+                var areaInner = '';
+                for (var i = 0, areas = data.length; i < areas; i++) {
+                    areaInner += `<p class="p${i + 1}" onclick="changeArea($(this))" data-areaCode="${data[i].areaCode}">${data[i].areaName}</p>`
+                }
+                $(".addressList").html(areaInner)
+
+            } else {
+                alert(data.msg)
+            }
+        },
+        error: function (err) {
+            alert('请求失败，稍后再试!')
+        }
+    })
+
+    // 地区选择
+    $(".address > span").click(function () {
+        $(".areaBg").fadeIn()
+    })
+    $(".areaBg").click(function () {
+        $(this).fadeOut();
+    })
+    function changeArea(that) {
+        var areaCode = that.attr('data-areaCode');
+        var areaName = that.text();
+        if($(".address span").text() === areaName) {
+            return false
+        }
+        $(".address span").text(areaName)
+        getTemp(areaCode)
+    }
+
+    // $(function () {
+    //     // 监控滚动
+    //     $(window).scroll(function () {
+    //         var topDis = $(window).scrollTop()
+    //
+    //         if (topDis < 100) {
+    //             $('.weatherOther').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.05)'}, 600)
+    //             $('.hours72').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.05)'}, 600)
+    //             $('.tianqicontDiv').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.05)'}, 600)
+    //             $('.botNav').css('display', 'flex')
+    //         } else {
+    //             $('.weatherOther').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.2)'}, 600)
+    //             $('.hours72').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.2)'}, 600)
+    //             $('.tianqicontDiv').stop(false, true).animate({backgroundColor: 'rgba(0,0,0, 0.2)'}, 600)
+    //             $(".botNav").css('display', 'none')
+    //         }
+    //     })
+    // })
+</script>
+
+</body>
+</html>

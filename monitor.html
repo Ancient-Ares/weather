@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧大棚</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <link href="css/video-js.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-text-size-adjust: none;
+        }
+
+        html {
+            font-size: 12px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header {text-align: center;line-height: 40px;width: 100%;border-bottom: 1px #ccc solid; background: #00ae68;color: #fff;font-size: 16px;position: relative;}
+
+        .header .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 40px;
+            width: 40px;
+        }
+
+        .header .back:after {
+            content: " ";
+            height: 10px;
+            width: 10px;
+            border-width: 2px 2px 0 0;
+            border-color: #fff;
+            border-style: solid;
+            -webkit-transform: matrix(-.71, .71, .71, .71, 0, 0);
+            transform: matrix(-.71, .71, .71, .71, 0, 0);
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            margin-top: -6px;
+        }
+
+        .content {padding: 0 20px;}
+
+        .videoBox {width: 100%;height: 180px; margin-left: auto; margin-right: auto; margin-top: 10px;}
+
+        .video-js {width: 100%;height: 100%;position: relative}
+
+        .clearfixed:after {content: ".";display: block;height: 0;clear: both;visibility: hidden}
+
+        .clearfixed {*+height: 1%;}
+
+        .tabBox {border: 1px solid #15966d;border-radius: 6px;margin: 20px 0;overflow: hidden;}
+
+        .tabBox .choose {height: 40px;line-height: 40px;text-align: center}
+
+        .tabBox .choose > div {float: left;box-sizing: border-box;font-size: 16px;width: 50%;background: #fff;color: #15966d}
+
+        .choose .cho1 {border-right: 1px solid #ddd;}
+
+        .tabBox .choose > div.active {background: #15966d;color: #fff;}
+
+        .tab > div { display: none;text-align: center;}
+
+        .tab > div.active { display: block }
+
+        .tab > div > button {display: inline-block;margin: 20px 5px;outline: none;border: 1px solid #15966d;background: #fff;padding: 10px 15px;border-radius: 6px;}
+
+        .tab > div > button.active {background: #15966d;color: #fff;}
+
+        .line {height: 45px;line-height: 45px;padding-left: 20px;position: relative;font-size: 18px;font-weight: 600;color: #333;}
+
+        .line:after {content: " ";position: absolute;left: 0;top: 10%; height: 80%;width: 4px;background: #23d196;}
+
+        .line span {float: right;font-weight: 500;font-size: 14px;}
+
+        .dataLive {padding: 20px 0;}
+
+        .dataLive > div {padding: 5px 10px;border: 1px solid #ddd;border-radius: 6px;height: 50px;line-height: 50px;margin-bottom: 10px;}
+
+        .dataLive > div img {height: 42px;vertical-align: middle;}
+
+        .dataLive > div .span1 {margin: 0 60px 0 40px;font-size: 1.4rem;font-weight: 600;color: #333;}
+
+        .dataLive > div .span2, .dataLive > div .span3 {color: #e4393c;font-size: 1.4rem;}
+
+        .dataLive > div .span3 {margin-left: 10px;font-size: 1.2rem;}
+
+        @media screen and (min-width: 600px) {
+            .dataLive > div .span1 {margin: 0 100px 0 60px;}
+        }
+
+        @media screen and (min-width: 414px) and (max-width: 599px) {
+            .dataLive > div .span1 {margin: 0 60px 0 40px;}
+        }
+
+        @media screen and (min-width: 375px) and (max-width: 413px) {
+            .dataLive > div .span1 {margin: 0 40px 0 20px;}
+        }
+
+        @media screen and (min-width: 360px) and (max-width: 374px) {
+            .dataLive > div .span1 {margin: 0 30px 0 20px;}
+        }
+
+        @media screen and (min-width: 320px) and (max-width: 359px) {
+            .dataLive > div .span1 {margin: 0 10px}
+        }
+
+        .fourBtn {margin: 10px 0;}
+
+        .fourBtn > button {width: 20%;margin: 0 2%;height: 35px;line-height: 35px;border: 1px solid #15966d;color: #15966d;background: #fff;border-radius: 6px;}
+
+        .fourBtn > button.active {color: #fff;background: #15966d}
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="back"></span>
+    <span>智慧大棚</span>
+</div>
+<div class="content clearfixed">
+    <div class="videoBox">
+        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+    </div>
+    <div class="tabBox">
+        <div class="choose">
+            <div class="cho1 active">1号大棚</div>
+            <div class="cho2">2号大棚</div>
+        </div>
+        <div class="tab">
+            <div class="tab1 active">
+                <button class="whice whice1 active">1号大棚A点观测站</button>
+                <button class="whice whice2">1号大棚B点观测站</button>
+            </div>
+            <div class="tab2">
+                <button class="whice whice3 active">2号大棚A点观测站</button>
+                <button class="whice whice4">2号大棚B点观测站</button>
+            </div>
+        </div>
+    </div>
+    <div class="line">数据监测</div>
+    <div class="fourBtn">
+        <button class="fbtn1 active">空气温度</button>
+        <button class="fbtn2">空气湿度</button>
+        <button class="fbtn3">土壤温度</button>
+        <button class="fbtn4">土壤湿度</button>
+    </div>
+    <div class="chartBox">
+        <div id="container" style="height:350px; width: 100%"></div>
+    </div>
+    <div class="line"> 数据实况 <span>2018年4月13日更新</span></div>
+    <div class="dataLive">
+        <div class="live1">
+            <img src="images/live1.png">
+            <span class="span1">空气温度</span>
+            <span class="span2"></span>
+            <span class="span3">°C</span>
+        </div>
+        <div class="live2">
+            <img src="images/live2.png">
+            <span class="span1">空气湿度</span>
+            <span class="span2"></span>
+            <span class="span3">%</span>
+        </div>
+        <div class="live3">
+            <img src="images/live3.png">
+            <span class="span1">二氧化碳</span>
+            <span class="span2"></span>
+            <span class="span3">ppm</span>
+        </div>
+        <div class="live4">
+            <img src="images/live4.png">
+            <span class="span1">土壤温度</span>
+            <span class="span2"></span>
+            <span class="span3">°C</span>
+        </div>
+        <div class="live5">
+            <img src="images/live5.png">
+            <span class="span1">土壤湿度</span>
+            <span class="span2"></span>
+            <span class="span3">%</span>
+        </div>
+        <div class="live6">
+            <img src="images/live6.png">
+            <span class="span1">光合辐射</span>
+            <span class="span2"></span>
+            <span class="span3">W/m²</span>
+        </div>
+        <div class="live7">
+            <img src="images/live7.png">
+            <span class="span1">太阳辐射</span>
+            <span class="span2"></span>
+            <span class="span3">mwh/cm</span>
+        </div>
+    </div>
+</div>
+
+<script src="js/zepto.min.js"></script>
+<script src="js/base.js"></script>
+<script src="js/video.min.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/dataTool.min.js"></script>
+
+<script type="text/javascript">
+    function drawCanvas(options, timeDate, data1, data2, data3) {
+        console.log(options.name1.substring(0,4))
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            title: {
+                text: options.title,
+                top: '0',
+                left: '0',
+                textStyle: {
+                    color: '#333',
+                    fontSize: 14
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [
+                    {
+                        name: options.name1,
+                        icon: 'circle',
+                        textStyle: {
+                            fontSize:10,
+                            width: '30%'
+                        }
+                    },
+                    {
+                        name: options.name2,
+                        icon: 'circle',
+                        textStyle: {
+                            fontSize:10,
+                            width: '30%'
+                        }
+                    },
+                    {
+                        name: options.name3,
+                        icon: 'circle',
+                        textStyle: {
+                            fontSize:10,
+                            width: '30%'
+                        }
+                    }
+                ],
+                top: '8%',
+                left: '0',
+                textStyle: {
+                    color: '#333',
+                    fontSize: 10
+                }
+            },
+            grid: {
+                top: '20%',
+                left: '4%',
+                right: '2%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: timeDate
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: options.name1,
+                    type: 'line',
+                    stack: '总量',
+                    data: data1
+                },
+                {
+                    name: options.name2,
+                    type: 'line',
+                    stack: '总量',
+                    data: data2
+                },
+                {
+                    name: options.name3,
+                    type: 'line',
+                    stack: '总量',
+                    data: data3
+                }
+            ]
+        };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+
+
+    var videoWidth = document.body.clientWidth - 40;
+    $(".videoBox").height(videoWidth / 16 * 9 + 'px')
+
+    options = {
+        preload: 'metadata',
+        controls: false,
+        loop: true,
+        poster: 'video/greenhouse.png',
+        sources: [{
+            src: 'video/greenhouse.mp4',
+            type: 'video/mp4'
+        }]
+    }
+    var myPlayer = videojs('my-video', options, function onPlayerReady() {
+        this.play();
+    });
+
+    var timeArr = [], data1 = [], data12 = [], data13 = [], data2 = [], data22 = [], data23 = [], data3 = [],
+        data32 = [], data33 = [], data4 = [], data42 = [], data43 = [], trData1, trData2, trData3;
+    var temOptions = {
+        title: '空气温度折线图',
+        name1: '上层空气温度',
+        name2: '中层空气温度',
+        name3: '下层空气温度'
+    }
+    function getWeatherData(options, siteId, whice) {
+        $.ajax({
+            type: 'GET',
+            url: baseUrl + 'house/getOneGreenhouseInfo.do',
+            dataType: 'json',
+            timeout: 10000,
+            data: {
+                siteId: siteId,
+                withStas: true,
+                timeCount: 32,
+                timeSpan: 3600
+            },
+            success: function (data) {
+                if (data.status === 'true') {
+                    $(".live1 .span2").text(data.airTem3)
+                    $(".live2 .span2").text(data.airHum3)
+                    $(".live3 .span2").text(data.co2)
+                    $(".live4 .span2").text(data.soilTem3)
+                    $(".live5 .span2").text(data.soilHum3)
+                    $(".live6 .span2").text(data.lightRad)
+                    $(".live7 .span2").text(data.sunRad)
+                    timeArr = data.timeArry
+                    data1 = data.airTem1Arry
+                    data12 = data.airTem2Arry
+                    data13 = data.airTem3Arry
+                    data2 = data.airHum1Arry
+                    data22 = data.airHum2Arry
+                    data23 = data.airHum3Arry
+                    data3 = data.soilTem1Arry
+                    data32 = data.soilTem2Arry
+                    data33 = data.soilTem3Arry
+                    data4 = data.soilHum1Arry
+                    data42 = data.soilHum2Arry
+                    data43 = data.soilHum3Arry
+                    if (whice === 1) {
+                        trData1 = data1;
+                        trData2 = data12;
+                        trData3 = data13;
+                    } else if (whice === 2) {
+                        trData1 = data2;
+                        trData2 = data22;
+                        trData3 = data23;
+                    } else if (whice === 3) {
+                        trData1 = data3;
+                        trData2 = data32;
+                        trData3 = data33;
+                    } else {
+                        trData1 = data4;
+                        trData2 = data42;
+                        trData3 = data43;
+                    }
+
+                    drawCanvas(options, timeArr, trData1, trData2, trData3)
+                } else {
+                    alert(data.msg)
+                }
+            },
+            error: function (xhr, type) {
+                alert('网络错误!');
+            }
+        })
+    }
+
+    window.onload = function () {
+        getWeatherData(temOptions, 1, 1)
+    }
+    var siteId = 1;
+    $(".fourBtn button").each(function (index) {
+        $(this).click(function (e) {
+            var className = e.target.className
+            if (className.search('active') === -1) {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+                if (index === 0) {
+                    var temOptions = {
+                        title: '空气温度折线图',
+                        name1: '上层空气温度',
+                        name2: '中层空气温度',
+                        name3: '下层空气温度'
+                    }
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else if (index === 1) {
+                    var temOptions = {
+                        title: '空气湿度折线图',
+                        name1: '上层空气湿度',
+                        name2: '中层空气湿度',
+                        name3: '下层空气湿度'
+                    }
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else if (index === 2) {
+                    var temOptions = {
+                        title: '土壤温度折线图',
+                        name1: '0cm土壤温度',
+                        name2: '10cm土壤温度',
+                        name3: '20cm土壤温度'
+                    }
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else {
+                    var temOptions = {
+                        title: '土壤湿度折线图',
+                        name1: '0cm土壤湿度',
+                        name2: '10cm土壤湿度',
+                        name3: '20cm土壤湿度'
+                    }
+                    getWeatherData(temOptions, siteId, index + 1)
+                }
+            }
+        })
+    })
+
+    // 两个观测站
+    $(".choose > div").each(function (index) {
+        $(this).click(function (e) {
+            var className = e.target.className
+            if (className.search('active') === -1) {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+                if (index === 0) {
+                    $(".tab > div").eq(0).addClass('active')
+                    $(".tab > div").eq(1).removeClass('active')
+                    $(".whice1").attr('class', 'whice whice1 active')
+                    $(".whice2").removeClass('active')
+                    siteId = 1
+                    getWeatherData(temOptions, 1, 1)
+                } else {
+                    $(".tab > div").eq(1).addClass('active')
+                    $(".tab > div").eq(0).removeClass('active')
+                    $(".whice3").attr('class', 'whice whice3 active')
+                    $(".whice4").removeClass('active')
+                    siteId = 5
+                    getWeatherData(temOptions, 5, 1)
+                }
+            }
+        })
+    });
+
+    // 四个观测点 1 2 5 7
+    $(".whice").each(function (index) {
+        $(this).click(function (e) {
+            var className = e.target.className
+            if (className.search('active') === -1) {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+                if (index === 0) {
+                    siteId = 1
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else if (index === 1) {
+                    siteId = 2
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else if (index === 2) {
+                    siteId = 5
+                    getWeatherData(temOptions, siteId, index + 1)
+                } else {
+                    siteId = 7
+                    getWeatherData(temOptions, siteId, index + 1)
+                }
+            }
+        })
+    })
+
+
+</script>
+</body>
+</html>

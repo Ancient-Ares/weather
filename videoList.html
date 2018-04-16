@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>灾情直报</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-text-size-adjust: none;
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-size: 1.2em;
+        }
+
+        .header {text-align: center;line-height: 40px;position: fixed;top: 0;left: 0;width: 100%;z-index: 10;border-bottom: 1px #ccc solid; background: #00ae68;color: #fff;font-size: 16px;}
+
+        .header .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 40px;
+            width: 40px;
+        }
+
+        .header .back:after {
+            content: " ";
+            height: 10px;
+            width: 10px;
+            border-width: 2px 2px 0 0;
+            border-color: #fff;
+            border-style: solid;
+            -webkit-transform: matrix(-.71, .71, .71, .71, 0, 0);
+            transform: matrix(-.71, .71, .71, .71, 0, 0);
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            margin-top: -6px;
+        }
+
+        .content {
+            padding: 40px 0 0 0;
+            max-width: 640px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+
+        .lists {
+            width: 100%;
+            height: 100%;
+            column-count: 2;
+            column-gap: 0;
+            counter-reset: item-counter;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lists:before {
+            content: " ";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            margin-left: -0.5px;
+            background: #fff;
+            z-index: 9;
+        }
+
+        .content .item {
+            box-sizing: border-box;
+            -webkit-column-break-inside: avoid;
+            break-inside: avoid;
+            counter-increment: item-counter;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #fff;
+            min-height: 100px;
+        }
+
+        .content .item img {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content .item h3 {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, .8);
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+        .content .item h3 p {overflow: auto}
+
+        .content .item .date {
+            display: block;
+            text-align: right;
+        }
+
+        .opacity {
+            -webkit-animation: opacity 0.3s linear;
+            animation: opacity 0.3s linear;
+        }
+
+        @-webkit-keyframes opacity {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes opacity {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .dropload-up, .dropload-down {
+            position: relative;
+            height: 0;
+            overflow: hidden;
+            font-size: 12px;
+            /* 开启硬件加速 */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .dropload-down {
+            height: 50px;
+        }
+
+        .dropload-refresh, .dropload-update, .dropload-load, .dropload-noData {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .dropload-load .loading {
+            display: inline-block;
+            height: 15px;
+            width: 15px;
+            border-radius: 100%;
+            margin: 6px;
+            border: 2px solid #666;
+            border-bottom-color: transparent;
+            vertical-align: middle;
+            -webkit-animation: rotate 0.75s linear infinite;
+            animation: rotate 0.75s linear infinite;
+        }
+
+        @-webkit-keyframes rotate {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            50% {
+                -webkit-transform: rotate(180deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(180deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .upVideo {position: absolute; top: 0; right: 0;outline: none;height: 40px;line-height: 40px;width: 70px;border: none;background: transparent;color: #f0ffdc;font-size: 16px;display: none;}
+
+        .clearfixed:after {content: ".";display: block;height: 0;clear: both;visibility: hidden}
+
+        .clearfixed {*+height: 1%;}
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="back"></span>
+    <span>灾情直报</span>
+    <button class="upVideo">发布</button>
+</div>
+<div class="content clearfixed">
+    <div class="lists"></div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/dropload.min.js"></script>
+<script src="js/base.js"></script>
+<script>
+    $(function () {
+        var userId = localStorage.getItem('userId') || ''
+        if(userId && userId !== 'undefind') {
+            $(".upVideo").css("display","block")
+        }
+        // 页数
+        var page = 0;
+        // 每页展示 10 个
+        var size = 10;
+
+        // dropload
+        $('.content').dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                page++;
+                // 拼接HTML
+                var result = '';
+                $.ajax({
+                    type: 'GET',
+                    url: baseUrl + 'disaster/pageDisasterWeather.do',
+                    dataType: 'json',
+                    data: {
+                        areaCode: '3212',
+                        userId: '',
+                        withPics: true,
+                        pageNo: page,
+                        pageSize: size
+                    },
+                    success: function (data) {
+                        if (data.status === 'true') {
+                            var data = data.data.rows;
+                            var inner = '';
+                            for (var i = 0, lens = data.length; i < lens; i++) {
+                                if (data[i].imgPaths.length > 0) {
+                                    var imgView = data[i].imgPaths[0]
+                                } else {
+                                    var imgView = data[i].videoPaths[0] + '?vframe/jpg/offset/1'
+                                }
+                                inner += `<a class="item opacity" onclick="setStoage($(this))" data-disasterId="${data[i].disasterId}" href="videoDetail.html">
+                                            <img src="${imgView}" onerror="src='images/noImg.png'">
+                                            <h3>
+                                                <p>${data[i].address}</p>
+                                                <span class="date">${data[i].updateTime}</span>
+                                            </h3>
+                                        </a>`
+                            }
+                            $('.lists').append(inner);
+                            // 锁定
+                            me.lock();
+                            // 无数据
+                            me.noData();
+                            me.resetload();
+                        } else {
+                            alert(data.msg)
+                            // 锁定
+                            me.lock();
+                            // 无数据
+                            me.noData();
+                            me.resetload();
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('网络错误!');
+                        // 即使加载出错，也得重置
+                        me.lock();
+                        // 无数据
+                        me.noData();
+                        me.resetload();
+                    }
+                })
+            }
+        })
+    })
+
+    $(".upVideo").click(function () {
+        if ($.os.ios) {
+            // ios
+            console.log('1')
+        } else {
+            // android
+            toback.toPubWeather()
+        }
+    })
+
+    function setStoage(that) {
+        var disasterid = that.attr('data-disasterid')
+        localStorage.setItem('disasterid', disasterid)
+    }
+</script>
+</body>
+</html>
