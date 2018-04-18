@@ -273,6 +273,7 @@
         var pageStart1 = 1;
         var pageStart2 = 1;
         var pageStart3 = 1;
+        var areaCode = localStorage.getItem('areaCode') || ''
 
         // dropload
         var dropload = $('.content').dropload({
@@ -286,7 +287,7 @@
                         dataType: 'json',
                         timeout: 2000,
                         data: {
-                            siteId: 1,
+                            areaCode: areaCode,
                             type: 1,
                             pageNo: pageStart1,
                             pageSize: num
@@ -295,7 +296,7 @@
                             if(data.status === 'true'){
                                 var data = data.data.rows, innHtml1 = '';
                                 for (var i=0,lens = data.length; i < lens; i++) {
-                                    innHtml1 += `<div class="item" data-id="${data[i].articleId}">
+                                    innHtml1 += `<div class="item" data-id="${data[i].articleId}" onclick="toBlank($(this).attr('data-id'))">
                                                     <div class="imgBox">
                                                         <img src="${data[i].titleImgs[0]}" onerror="src='images/noImg2.png'">
                                                     </div>
@@ -344,7 +345,7 @@
                         dataType: 'json',
                         timeout: 2000,
                         data: {
-                            siteId: 1,
+                            areaCode: areaCode,
                             type: 2,
                             pageNo: pageStart2,
                             pageSize: num
@@ -353,7 +354,7 @@
                             if(data.status === 'true'){
                                 var data = data.data.rows, innHtml2 = '';
                                 for (var i=0,lens = data.length; i < lens; i++) {
-                                    innHtml2 += `<div class="item" data-id="${data[i].articleId}">
+                                    innHtml2 += `<div class="item" data-id="${data[i].articleId}" onclick="toBlank($(this).attr('data-id'))">
                                                     <div class="imgBox">
                                                         <img src="${data[i].titleImgs[0]}" onerror="src='images/noImg2.png'">
                                                     </div>
@@ -402,7 +403,7 @@
                         dataType: 'json',
                         timeout: 2000,
                         data: {
-                            siteId: 1,
+                            areaCode: areaCode,
                             type: 3,
                             pageNo: pageStart3,
                             pageSize: num
@@ -411,7 +412,7 @@
                             if(data.status === 'true'){
                                 var data = data.data.rows, innHtml3 = '';
                                 for (var i=0,lens = data.length; i < lens; i++) {
-                                    innHtml3 += `<div class="item" data-id="${data[i].articleId}">
+                                    innHtml3 += `<div class="item" data-id="${data[i].articleId}"  onclick="toBlank($(this).attr('data-id'))">
                                                     <div class="imgBox">
                                                         <img src="${data[i].titleImgs[0]}" onerror="src='images/noImg2.png'">
                                                     </div>
@@ -455,7 +456,13 @@
                 }
             }
         })
-    })
+    });
+
+    function toBlank (id) {
+        var userId = localStorage.getItem('userId') || ''
+        var totalUrl = `${articleUrl}content/view.html?articleid=${id}&userId=${userId}`
+        window.location.href = totalUrl
+    }
 </script>
 </body>
 </html>

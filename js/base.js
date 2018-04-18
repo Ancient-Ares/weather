@@ -1,4 +1,8 @@
-var baseUrl = 'http://192.168.1.114:8080/weather/app/';
+var baseUrl = 'http://121.40.249.208:8080/weather/app/';
+// var baseUrl = 'http://192.168.1.113:8080/weather/app/';
+
+var articleUrl = 'https://webapp.snzfnm.com/webapp/';
+// var articleUrl = 'https://192.168.1.127:8443/webapp/';
 
 // 判断 ios | android | wechat
 (function ($, window) {
@@ -54,7 +58,7 @@ function routerBack() {
 $(".goBack").click(function () {
     if ($.os.ios) {
         // ios
-        console.log('1')
+        window.webkit.messageHandlers.toback.postMessage(null)
     } else {
         // android
         toback.back()

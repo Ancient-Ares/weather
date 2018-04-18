@@ -99,7 +99,7 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            background: rgba(0, 0, 0, .8);
+            background: rgba(0, 0, 0, .6);
             font-size: 12px;
             color: #fff;
             font-weight: 500;
@@ -107,13 +107,14 @@
             text-overflow: ellipsis;
             overflow: hidden;
             box-sizing: border-box;
-            padding: 5px;
+            padding: 0 5px;
         }
-        .content .item h3 p {overflow: auto}
+        .content .item h3 p {overflow: auto;text-align: right;margin:5px 0;}
 
         .content .item .date {
             display: block;
             text-align: right;
+            margin:5px 0;
         }
 
         .opacity {
@@ -293,7 +294,7 @@
     $(".upVideo").click(function () {
         if ($.os.ios) {
             // ios
-            console.log('1')
+            window.webkit.messageHandlers.toPubWeather.postMessage(null)
         } else {
             // android
             toback.toPubWeather()
