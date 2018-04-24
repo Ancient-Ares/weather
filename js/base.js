@@ -1,5 +1,5 @@
 var baseUrl = 'http://121.40.249.208:8080/weather/app/';
-// var baseUrl = 'http://192.168.1.113:8080/weather/app/';
+// var baseUrl = 'http://192.168.1.122:8080/weather/app/';
 
 var articleUrl = 'https://webapp.snzfnm.com/webapp/';
 // var articleUrl = 'https://192.168.1.127:8443/webapp/';

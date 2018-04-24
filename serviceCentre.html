@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>服务中心</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <style>
+        * {-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0;padding: 0;}
+
+        html {width: 100%;height: 100%;margin: 0px;padding: 0px;-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);font-size: 14px;color: #333;}
+
+        body {width: 100%;height: 100%;-webkit-overflow-scrolling: touch;}
+
+        img, a {-webkit-touch-callout: none;}
+
+        a, a:active, a:hover {text-decoration: none;}
+
+        a, button, input, textarea {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+
+        .title-line {position: relative;height: 40px;line-height: 40px;padding-left: 25px;font-weight: 700;font-size: 16px;color: #000;}
+
+        .title-line:before {content: ' ';position: absolute;top: 12px;left: 10px;height: 16px;width: 4px;background: #198fe6;}
+
+        .serviceBox {margin-bottom: 30px;color: #000;}
+
+        .service {overflow: hidden;_zoom: 1;}
+
+        .serviceItem {float: left;width: 25%;height: 60px;text-align: center;margin-top: 15px;cursor: pointer; }
+
+        .serviceItem .imgBox {height: 36px;line-height: 36px;}
+
+        .serviceItem .imgBox img {width: 32px;vertical-align: middle;}
+
+        .serviceItem p {margin-top: 8px;font-size: 12px;}
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="serviceBox">
+        <div class="title-line">政策服务</div>
+        <div class="service">
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.NewChannelActivity"
+                 data-iosClass="firstViewController">
+                <div class="imgBox">
+                    <img src="img/s11.png">
+                </div>
+                <p>农业政策</p>
+            </div>
+            <div class="serviceItem goTarget iosMoney"
+                 data-androidClass="com.shenlong.newframing.actys.EconomyMainActivity"
+                 data-iosClass="firstCzznViewController">
+                <div class="imgBox">
+                    <img src="img/s12.png">
+                </div>
+                <p>财政支农</p>
+            </div>
+            <div class="serviceItem goTarget hasAll" data-androidClass="com.shenlong.newframing.actys.ApplyListActivity"
+                 data-iosClass="permissionDeclareViewController" data-param="1">
+                <div class="imgBox">
+                    <img src="img/s13.png">
+                </div>
+                <p>许可申请</p>
+            </div>
+            <div class="serviceItem goTarget hasAll" data-androidClass="com.shenlong.newframing.actys.ApplyListActivity"
+                 data-iosClass="permissionDeclareViewController" data-param="2">
+                <div class="imgBox">
+                    <img src="img/s14.png">
+                </div>
+                <p>项目申报</p>
+            </div>
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.NongQingListActivity"
+                 data-iosClass="nongqigndiaochaViewController">
+                <div class="imgBox">
+                    <img src="img/s15.png">
+                </div>
+                <p>农情调查</p>
+            </div>
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.NewCircleListActivity"
+                 data-iosClass="newAttentionViewController">
+                <div class="imgBox">
+                    <img src="img/s16.png">
+                </div>
+                <p>农情社区</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">农技服务</div>
+        <div class="service">
+            <div class="serviceItem goTarget hasLogin"
+                 data-androidClass="com.shenlong.newframing.actys.FarmZJServiceActivity"
+                 data-iosClass="expertDatabaseViewController">
+                <div class="imgBox">
+                    <img src="img/s21.png">
+                </div>
+                <p>农业专家</p>
+            </div>
+            <div class="serviceItem goTarget hasAll"
+                 data-androidClass="com.shenlong.newframing.actys.FarmSHServiceActivity"
+                 data-iosClass="buyViewController">
+                <div class="imgBox">
+                    <img src="img/s22.png">
+                </div>
+                <p>社会化服务</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">农业新技术培训</div>
+        <div class="service">
+            <div class="serviceItem goWebview" data-androidClass="com.shenlong.newframing.actys.BaikeWebActivity"
+                 data-url="https://webapp.snzfnm.com/webapp/encyclopedia/index.html">
+                <div class="imgBox">
+                    <img src="img/s31.png">
+                </div>
+                <p>百科学堂</p>
+            </div>
+            <div class="serviceItem goWebview iosWebview"
+                 data-androidClass="com.shenlong.newframing.actys.BaikeWebActivity"
+                 data-url="https://webapp.snzfnm.com/webapp/encyclopedia/listchannel.html?type=1">
+                <div class="imgBox">
+                    <img src="img/s32.png">
+                </div>
+                <p>知识库</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">市场服务</div>
+        <div class="service">
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.MarketListActivity"
+                 data-iosClass="marketListViewController">
+                <div class="imgBox">
+                    <img src="img/s41.png">
+                </div>
+                <p>农商行情</p>
+            </div>
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.SupplyInfoActivity"
+                 data-iosClass="purchaseHallListViewController">
+                <div class="imgBox">
+                    <img src="img/s42.png">
+                </div>
+                <p>供应信息</p>
+            </div>
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.BuyInfoActivity"
+                 data-iosClass="buyledListViewController">
+                <div class="imgBox">
+                    <img src="img/s43.png">
+                </div>
+                <p>求购信息</p>
+            </div>
+            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.ListSellMoreActivity"
+                 data-iosClass="supplyHallViewController">
+                <div class="imgBox">
+                    <img src="img/s44.png">
+                </div>
+                <p>品牌农资</p>
+            </div>
+            <div class="serviceItem goTarget"
+                 data-androidClass="com.shenlong.newframing.actys.FarmProduceListSellActivity"
+                 data-iosClass="nongchanHallViewController">
+                <div class="imgBox">
+                    <img src="img/s45.png">
+                </div>
+                <p>农产品交易</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">金融保险服务</div>
+        <div class="service">
+            <div class="serviceItem goTarget hasAll"
+                 data-androidClass="com.shenlong.newframing.actys.InsuranceListActivity"
+                 data-iosClass="jinrongbaoxianListViewController"
+                 data-param="4">
+                <div class="imgBox">
+                    <img src="img/s51.png">
+                </div>
+                <p>农业保险</p>
+            </div>
+            <div class="serviceItem goTarget hasAll"
+                 data-androidClass="com.shenlong.newframing.actys.InsuranceListActivity"
+                 data-iosClass="jinrongbaoxianListViewController"
+                 data-param="3">
+                <div class="imgBox">
+                    <img src="img/s52.png">
+                </div>
+                <p>农村金融</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">政府监管</div>
+        <div class="service">
+            <div class="serviceItem goTarget hasGov"
+                 data-androidClass="com.shenlong.newframing.actys.NewIndustryMapActivity"
+                 data-iosClass="farmMapViewController">
+                <div class="imgBox">
+                    <img src="img/s61.png">
+                </div>
+                <p>农业地图</p>
+            </div>
+            <div class="serviceItem goTarget hasGov"
+                 data-androidClass="com.shenlong.newframing.actys.StatisticsOrderMonitorActivity"
+                 data-iosClass="nongzijianguanViewController">
+                <div class="imgBox">
+                    <img src="img/s62.png">
+                </div>
+                <p>农资监管</p>
+            </div>
+            <div class="serviceItem goTarget hasGov iosNjgl"
+                 data-androidClass="com.shenlong.newframing.actys.StatisticsZFListActivity">
+                <div class="imgBox">
+                    <img src="img/s63.png">
+                </div>
+                <p>农技管理</p>
+            </div>
+            <!--<div class="serviceItem goTarget hasGov" data-androidClass="">
+                <div class="imgBox">
+                    <img src="img/s64.png">
+                </div>
+                <p>无害化监管</p>
+            </div>-->
+            <div class="serviceItem goTarget hasGov"
+                 data-androidClass="com.shenlong.newframing.actys.StatisticActivity"
+                 data-iosClass="statisticalMonitoringViewController">
+                <div class="imgBox">
+                    <img src="img/s65.png">
+                </div>
+                <p>统计分析</p>
+            </div>
+            <div class="serviceItem goQuality" data-androidClass="com.shenlong.newframing.actys.WebUrlWebViewActivity"
+                 data-url="http://www.tzncpjgw.com">
+                <div class="imgBox">
+                    <img src="img/s66.png">
+                </div>
+                <p>质量追溯</p>
+            </div>
+            <div class="serviceItem goTarget hasGov"
+                 data-androidClass="com.shenlong.newframing.actys.FarmInformActivity"
+                 data-iosClass="noticeViewController">
+                <div class="imgBox">
+                    <img src="img/s67.png">
+                </div>
+                <p>通知公告</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">农业气象服务</div>
+        <div class="service">
+            <div class="serviceItem goWebview goWeather">
+                <div class="imgBox">
+                    <img src="img/s71.png">
+                </div>
+                <p>天气预警</p>
+            </div>
+            <div class="serviceItem goWebview goWeather">
+                <div class="imgBox">
+                    <img src="img/s72.png">
+                </div>
+                <p>天气实况</p>
+            </div>
+            <div class="serviceItem goWebview goWeather">
+                <div class="imgBox">
+                    <img src="img/s73.png">
+                </div>
+                <p>气象惠农</p>
+            </div>
+            <div class="serviceItem goWebview goWeather">
+                <div class="imgBox">
+                    <img src="img/s74.png">
+                </div>
+                <p>智慧大棚</p>
+            </div>
+            <div class="serviceItem goWebview goWeather">
+                <div class="imgBox">
+                    <img src="img/s75.png">
+                </div>
+                <p>灾情直报</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">畜牧养殖服务</div>
+        <div class="service">
+            <div class="serviceItem goTarget hasFarm"
+                 data-androidClass="com.shenlong.newframing.actys.TreatmentHomeActivity" data-param="0">
+                <div class="imgBox">
+                    <img src="img/s81.png">
+                </div>
+                <p>远程问诊</p>
+            </div>
+            <div class="serviceItem">
+                <div class="imgBox">
+                    <img src="img/s82.png">
+                </div>
+                <p>智能养殖</p>
+            </div>
+        </div>
+    </div>
+    <div class="serviceBox">
+        <div class="title-line">生活服务</div>
+        <div class="service">
+            <div class="serviceItem">
+                <div class="imgBox">
+                    <img src="img/s91.png">
+                </div>
+                <p>乡村旅游</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/zepto.min.js"></script>
+<script>
+    // 登录包名 android & ios
+    const ANDROIDLOGIN = 'com.shenlong.newframing.actys.FarmLoginActivity';
+    const IOSLOGIN = 'loginViewController';
+
+    // 移动端  url - userID
+    //组织类型  0-社会化 1-政府 2-农场 空-无组织
+    var url = window.location.href.split('?');
+    if (url.length < 2) {
+        var userId = '';
+        var type = '';
+    } else {
+        var splitUrl = url[1].split('&');
+        var userId = url[0].split('=')[1] || '';
+        var type = url[1].split('=')[1] || '';
+    }
+
+    // 判断 ios | android | wechat
+    (function ($, window) {
+        function detect(ua) {
+            this.os = {};
+            var funcs = [
+
+                function () { //wechat
+                    var wechat = ua.match(/(MicroMessenger)\/([\d\.]+)/i);
+                    if (wechat) { //wechat
+                        this.os.wechat = {
+                            version: wechat[2].replace(/_/g, '.')
+                        };
+                    }
+                    return false;
+                },
+                function () { //android
+                    var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+                    if (android) {
+                        this.os.android = true;
+                        this.os.version = android[2];
+
+                        this.os.isBadAndroid = !(/Chrome\/\d/.test(window.navigator.appVersion));
+                    }
+                    return this.os.android === true;
+                },
+                function () { //ios
+                    var iphone = ua.match(/(iPhone\sOS)\s([\d_]+)/);
+                    if (iphone) { //iphone
+                        this.os.ios = this.os.iphone = true;
+                        this.os.version = iphone[2].replace(/_/g, '.');
+                    } else {
+                        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+                        if (ipad) { //ipad
+                            this.os.ios = this.os.ipad = true;
+                            this.os.version = ipad[2].replace(/_/g, '.');
+                        }
+                    }
+                    return this.os.ios === true;
+                }
+            ];
+            [].every.call(funcs, function (func) {
+                return !func.call($);
+            });
+        }
+
+        detect.call($, navigator.userAgent)
+    })($, window);
+
+    // 公共方法
+    function checkClass($this) {
+        var androidClass = $this.attr('data-androidClass') || '';
+        var iosClass = $this.attr('data-iosClass') || '';
+        var param = $this.attr('data-param') || '';
+        if (param) {
+            if ($.os.ios) {
+                var iosJson = {
+                    class: iosClass,
+                    typeIndex: param,
+                    htmlUrl: ''
+                }
+                window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+            } else {
+                method.jumpStrAct(androidClass, param, '');
+            }
+        } else {
+            if ($.os.ios) {
+                if ($this.hasClass('iosNjgl')) {
+                    window.webkit.messageHandlers.tonjgl.postMessage(null);
+                } else {
+                    var iosJson = {
+                        class: iosClass,
+                        typeIndex: '',
+                        htmlUrl: ''
+                    }
+                    if ($this.hasClass('iosMoney')) {
+                        var iosJson = {
+                            class: iosClass,
+                            typeIndex: '1',
+                            htmlUrl: ''
+                        }
+                    }
+                    window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+                }
+            } else {
+                method.jumpAct(androidClass);
+            }
+        }
+    }
+
+    function checkLogin() {
+        if ($.os.ios) {
+            var iosJson = {
+                class: IOSLOGIN,
+                typeIndex: '',
+                htmlUrl: ''
+            }
+            window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+        } else {
+            method.jumpAct(ANDROIDLOGIN)
+        }
+    }
+
+    // 原生类目
+    $("body").on('click', '.goTarget', function () {
+        if ($(this).hasClass('hasAll')) {
+            if (userId && type) {
+                checkClass($(this))
+            } else {
+                if (!userId) {
+                    checkLogin()
+                } else if (!type) {
+                    alert('未获取到组织信息！');
+                }
+            }
+        } else if ($(this).hasClass('hasGov')) {
+            if (type === '1') {
+                checkClass($(this))
+            } else {
+                alert('请选择政府组织！');
+            }
+        } else if ($(this).hasClass('hasFarm')) {
+            if (type === '2') {
+                checkClass($(this))
+            } else {
+                alert('请选择农场组织！');
+            }
+        } else if ($(this).hasClass('hasLogin')) {
+            if (userId) {
+                checkClass($(this))
+            } else {
+                checkLogin()
+            }
+        } else {
+            checkClass($(this))
+        }
+    });
+
+    // webview
+    $("body").on('click', '.goWebview', function () {
+        if ($(this).hasClass('goWeather')) {    // 天气
+            var webUrl = 'http://121.40.249.208/web/weather.html?userId=' + userId;
+            if ($.os.ios) {
+                var iosJson = {
+                    class: 'bxProcessesViewController',
+                    typeIndex: '',
+                    htmlUrl: webUrl
+                };
+                window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+            } else {
+                var androidClass = 'com.shenlong.newframing.actys.FullWebViewActivity';
+                method.jumpStrAct(androidClass, webUrl, '');
+            }
+        } else {
+            if ($.os.ios) {
+                if ($(this).hasClass('iosWebview')) {   // 知识库
+                    var iosJson = {
+                        class: 'bxProcessesViewController',
+                        typeIndex: '1',
+                        htmlUrl: 'https://webapp.snzfnm.com/webapp/encyclopedia/listchannel.html?type=1'
+                    };
+                    window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+                } else {    // 百科学堂
+                    var iosJson = {
+                        class: 'encyclopediaDetailViewController',
+                        typeIndex: '1',
+                        htmlUrl: 'https://webapp.snzfnm.com/webapp/encyclopedia/index.html'
+                    };
+                    window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+                }
+            } else {
+                var androidSrc = $(this).attr('data-androidClass');
+                var androidWebSrc = $(this).attr('data-url');
+                method.jumpStrAct(androidSrc, androidWebSrc, '');
+            }
+        }
+    });
+
+    // 质量追溯
+    $("body").on('click', '.goQuality', function () {
+        if ($.os.ios) {
+            // ios
+            var iosJson = {
+                class: 'bxProcessesViewController',
+                typeIndex: '1',
+                htmlUrl: $(this).attr('data-url')
+            };
+            window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+        } else {
+            // android
+            var androidClass = $(this).attr('data-androidClass')
+            var webUrl = $(this).attr('data-url')
+            method.jumpStrAct(androidClass, webUrl, '质量追溯')
+        }
+    });
+
+    $("body").on('click', '.goApp', function () {
+        if ($.os.ios) {
+            // ios
+            alert('ios')
+            // window.webkit.messageHandlers.toWeatherMap.postMessage(null)
+        } else {
+            // android
+            method.jumpApp('com.ureading.sunongtong');
+        }
+    });
+
+</script>
+</body>
+</html>

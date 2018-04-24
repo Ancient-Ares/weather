@@ -1,5 +1,5 @@
 @charset "utf-8";
-/*科e互联特效基本框架CSS*/
+/*CSS reset*/
 body, ul, dl, dd, dt, ol, li, p, h1, h2, h3, h4, h5, h6, textarea, form, select, fieldset, table, td, div, input {margin:0;padding:0;-webkit-text-size-adjust: none}
 h1, h2, h3, h4, h5, h6{font-size:12px;font-weight:normal}
 body>div{margin:0 auto}

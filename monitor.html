@@ -117,7 +117,7 @@
         .fourBtn > button {width: 20%;margin: 0 2%;height: 35px;line-height: 35px;border: 1px solid #15966d;color: #15966d;background: #fff;border-radius: 6px;}
 
         .fourBtn > button.active {color: #fff;background: #15966d}
-
+        .chartBox{margin:0 -10px;}
     </style>
 </head>
 <body>
@@ -127,7 +127,7 @@
 </div>
 <div class="content clearfixed">
     <div class="videoBox">
-        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+            <video id="my-video" webkit-playsinline playsinline class="video-js vjs-default-skin vjs-big-play-centered"></video>
     </div>
     <div class="tabBox">
         <div class="choose">
@@ -206,7 +206,6 @@
 <script src="js/base.js"></script>
 <script src="js/video.min.js"></script>
 <script src="js/echarts.custom.min.js"></script>
-
 <script>
     var videoWidth = document.body.clientWidth - 40;
     $(".videoBox").height(videoWidth / 16 * 9 + 'px');
@@ -236,7 +235,6 @@
                         icon: 'circle',
                         textStyle: {
                             fontSize: 10,
-                            width: '30%'
                         }
                     },
                     {
@@ -244,7 +242,6 @@
                         icon: 'circle',
                         textStyle: {
                             fontSize: 10,
-                            width: '30%'
                         }
                     },
                     {
@@ -252,20 +249,19 @@
                         icon: 'circle',
                         textStyle: {
                             fontSize: 10,
-                            width: '30%'
                         }
                     }
                 ],
-                top: '8%',
+                top: '7%',
                 left: '0',
                 textStyle: {
                     color: '#333',
-                    fontSize: 10
+                    fontSize: 10,
                 }
             },
             grid: {
-                top: '20%',
-                left: '4%',
+                top: '18%',
+                left: '2%',
                 right: '2%',
                 bottom: '3%',
                 containLabel: true
@@ -482,7 +478,7 @@
                 }
             }
         })
-    })
+    });
 
     options = {
         preload: 'metadata',

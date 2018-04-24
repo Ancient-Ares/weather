@@ -54,7 +54,7 @@
         .content .reference span {font-size: 12px;margin:0 5px;display: inline-block;}
         .article {margin-top:20px;text-align: left;}
         .article p {text-indent: 28px;font-size: 14px;}
-        .picture img {max-width: 100%}
+        .picture img {max-width: 100%;margin:10px auto;display: block;}
     </style>
 </head>
 <body>
@@ -78,7 +78,7 @@
     </div>
     <div class="picture"></div>
     <div class="videoBox">
-        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+        <video id="my-video" webkit-playsinline playsinline class="video-js vjs-default-skin vjs-big-play-centered"></video>
     </div>
 </div>
 <script src="js/zepto.min.js"></script>
@@ -145,6 +145,7 @@
             alert('网络错误!');
         }
     })
+
 
 </script>
 </body>
