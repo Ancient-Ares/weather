@@ -1,0 +1,66 @@
+// android
+
+ method.jumpStrAct(androidClass, param, '');
+
+com.shenlong.newframing.actys.NewChannelActivity			(政策资讯)
+com.shenlong.newframing.actys.EconomyMainActivity			(财政支农)
+com.shenlong.newframing.actys.NewCircleListActivity			(社区话题)
+com.shenlong.newframing.actys.BaikeWebActivity	(百科学堂 url:https://webapp.snzfnm.com/webapp/encyclopedia/index.html)
+com.shenlong.newframing.actys.BaikeWebActivity	(知识库 url:https://webapp.snzfnm.com/webapp/encyclopedia/listchannel.html?type=1)
+com.shenlong.newframing.actys.MarketListActivity			(农商行情)
+com.shenlong.newframing.actys.SupplyInfoActivity			(供应信息)
+com.shenlong.newframing.actys.BuyInfoActivity				(求购信息)
+com.shenlong.newframing.actys.ListSellMoreActivity			(品牌农资)
+com.shenlong.newframing.actys.FarmProduceListSellActivity 	(农产品交易)
+com.shenlong.newframing.actys.FullWebViewActivity			(天气 url:)
+
+//需判断是否登录
+com.shenlong.newframing.actys.FarmZJServiceActivity			(农业专家)
+
+//需判断是否登录 是否有组织
+com.shenlong.newframing.actys.ApplyListActivity 			(type 1:许可申请  2:项目申报) 
+com.shenlong.newframing.actys.InsuranceListActivity			(type 3:农村金融  4:农村保险) 
+com.shenlong.newframing.actys.NongQingListActivity 			(农情调查)
+com.shenlong.newframing.actys.FarmSHServiceActivity 		(社会化服务)
+
+//需政府组织
+com.shenlong.newframing.actys.NewIndustryMapActivity			(农业地图)
+com.shenlong.newframing.actys.StatisticsOrderMonitorActivity	(农资监管)
+com.shenlong.newframing.actys.StatisticsZFListActivity			(农技管理)
+com.shenlong.newframing.actys.StatisticActivity  				(统计分析)
+com.shenlong.newframing.actys.FarmInformActivity 				(通知公告)
+
+//需农场组织
+com.shenlong.newframing.actys.TreatmentHomeActivity			(宠物问诊 flag:0)
+
+
+
+
+// IOS 
+
+window.webkit.messageHandlers.toViewContro.postMessage(iosClass, param, '')
+
+农业政策 firstViewController
+财政支农 caizhengzhinongViewController
+农情调查 nongqigndiaochaViewController
+农情社区 newAttentionViewController
+农业专家 expertDatabaseViewController
+社会化服务 buyViewController
+农商行情 marketListViewController
+供应信息 purchaseHallListViewController
+求购信息 buyledListViewController
+品牌农资 supplyHallViewController
+农产品 nongchanHallViewController
+农业地图 farmMapViewController
+农资监管 nongzijianguanViewController
+统计分析 statisticalMonitoringViewController
+通知公告 noticeViewController
+许可申请 permissionDeclareViewController     1
+项目申报 permissionDeclareViewController     2
+农村金融 jinrongbaoxianListViewController     3
+农业保险 jinrongbaoxianListViewController     4
+百科学堂 encyclopediaDetailViewController    1    
+登录 loginViewController
+
+跳转网页 weatherWebViewController
+

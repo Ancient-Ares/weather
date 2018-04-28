@@ -32,6 +32,32 @@
         .serviceItem .imgBox img {width: 32px;vertical-align: middle;}
 
         .serviceItem p {margin-top: 8px;font-size: 12px;}
+
+        .modal { display: none; position: fixed;top: 0;left: 0;height: 100%;width: 100%; background: rgba(0, 0, 0, .3); text-align: center; font-size: 14px;overflow: hidden;color: #333;z-index: 999;}
+
+        .modal-box {position: absolute;width: 80%; height: 120px; left: 10%; top: 50%; margin-top: -100px; z-index: 10;background: rgba(255, 255, 255, .99);border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, .2); }
+
+        .modal-content {height: 80px;padding: 20px 0;line-height: 40px;box-sizing: border-box;position: relative}
+
+        .modal-header:after, .modal-content:after {content: '';width: 100%;height: 1px;position: absolute;left: 0;bottom: 0;transform: scaleY(.5); background-color: #ddd;}
+
+        .modal-confirm {height: 40px;line-height: 40px;cursor: pointer;color: #007aff;}
+
+        .modal.fadeIn {display: block;}
+
+        .modal.fadeIn .modal-box { -webkit-animation: fadeIn 0.7s cubic-bezier(0.7, 0, 0.3, 1); animation: fadeIn 0.7s cubic-bezier(0.7, 0, 0.3, 1); }
+
+        .modal.fadeOut .modal-box { -webkit-animation: fadeOut 0.7s cubic-bezier(0.7, 0, 0.3, 1); animation: fadeOut 0.7s cubic-bezier(0.7, 0, 0.3, 1); }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(-200px) perspective(500px) rotateX(40deg); }
+            100% { opacity: 1; transform: scale(1) translateY(0) perspective(500px) rotateX(0); }
+        }
+
+        @-webkit-keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1) translateY(0) perspective(500px) rotateX(0); }
+            100% { opacity: 0; transform: scale(0.8) translateY(-200px) perspective(500px) rotateX(40deg); }
+        }
     </style>
 </head>
 <body>
@@ -68,7 +94,8 @@
                 </div>
                 <p>项目申报</p>
             </div>
-            <div class="serviceItem goTarget" data-androidClass="com.shenlong.newframing.actys.NongQingListActivity"
+            <div class="serviceItem goTarget hasAll"
+                 data-androidClass="com.shenlong.newframing.actys.NongQingListActivity"
                  data-iosClass="nongqigndiaochaViewController">
                 <div class="imgBox">
                     <img src="img/s15.png">
@@ -102,6 +129,12 @@
                     <img src="img/s22.png">
                 </div>
                 <p>社会化服务</p>
+            </div>
+            <div class="serviceItem goApp" data-androidClass="">
+                <div class="imgBox">
+                    <img src="img/s23.png">
+                </div>
+                <p>农技耘</p>
             </div>
         </div>
     </div>
@@ -285,20 +318,24 @@
         <div class="title-line">畜牧养殖服务</div>
         <div class="service">
             <div class="serviceItem goTarget hasFarm"
-                 data-androidClass="com.shenlong.newframing.actys.TreatmentHomeActivity" data-param="0">
+                 data-androidClass="com.shenlong.newframing.actys.TreatmentHomeActivity"
+                 data-iosClass="cwFirstViewController" data-param="0">
                 <div class="imgBox">
                     <img src="img/s81.png">
                 </div>
                 <p>远程问诊</p>
             </div>
+            <!--
             <div class="serviceItem">
                 <div class="imgBox">
                     <img src="img/s82.png">
                 </div>
                 <p>智能养殖</p>
             </div>
+            -->
         </div>
     </div>
+    <!--
     <div class="serviceBox">
         <div class="title-line">生活服务</div>
         <div class="service">
@@ -310,13 +347,38 @@
             </div>
         </div>
     </div>
+    -->
+</div>
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            <p></p>
+        </div>
+        <div class="modal-confirm">
+            <p>确定</p>
+        </div>
+    </div>
 </div>
 
 <script src="js/zepto.min.js"></script>
+<script src="js/base.js"></script>
 <script>
     // 登录包名 android & ios
     const ANDROIDLOGIN = 'com.shenlong.newframing.actys.FarmLoginActivity';
     const IOSLOGIN = 'loginViewController';
+
+    $(".modal").click(function () {
+        $(".modal").addClass('fadeOut');
+        var timer = setTimeout(function () {
+            $(".modal").attr('class', 'modal')
+        }, 300);
+        timer = null;
+    })
+
+    function showModal(content) {
+        $(".modal-content p").html(content);
+        $(".modal").addClass('fadeIn');
+    }
 
     // 移动端  url - userID
     //组织类型  0-社会化 1-政府 2-农场 空-无组织
@@ -326,57 +388,9 @@
         var type = '';
     } else {
         var splitUrl = url[1].split('&');
-        var userId = url[0].split('=')[1] || '';
-        var type = url[1].split('=')[1] || '';
+        var userId = splitUrl[0].split('=')[1] || '';
+        var type = splitUrl[1].split('=')[1] || '';
     }
-
-    // 判断 ios | android | wechat
-    (function ($, window) {
-        function detect(ua) {
-            this.os = {};
-            var funcs = [
-
-                function () { //wechat
-                    var wechat = ua.match(/(MicroMessenger)\/([\d\.]+)/i);
-                    if (wechat) { //wechat
-                        this.os.wechat = {
-                            version: wechat[2].replace(/_/g, '.')
-                        };
-                    }
-                    return false;
-                },
-                function () { //android
-                    var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
-                    if (android) {
-                        this.os.android = true;
-                        this.os.version = android[2];
-
-                        this.os.isBadAndroid = !(/Chrome\/\d/.test(window.navigator.appVersion));
-                    }
-                    return this.os.android === true;
-                },
-                function () { //ios
-                    var iphone = ua.match(/(iPhone\sOS)\s([\d_]+)/);
-                    if (iphone) { //iphone
-                        this.os.ios = this.os.iphone = true;
-                        this.os.version = iphone[2].replace(/_/g, '.');
-                    } else {
-                        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
-                        if (ipad) { //ipad
-                            this.os.ios = this.os.ipad = true;
-                            this.os.version = ipad[2].replace(/_/g, '.');
-                        }
-                    }
-                    return this.os.ios === true;
-                }
-            ];
-            [].every.call(funcs, function (func) {
-                return !func.call($);
-            });
-        }
-
-        detect.call($, navigator.userAgent)
-    })($, window);
 
     // 公共方法
     function checkClass($this) {
@@ -428,7 +442,7 @@
             }
             window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
         } else {
-            method.jumpAct(ANDROIDLOGIN)
+            method.jumpAct(ANDROIDLOGIN);
         }
     }
 
@@ -436,44 +450,44 @@
     $("body").on('click', '.goTarget', function () {
         if ($(this).hasClass('hasAll')) {
             if (userId && type) {
-                checkClass($(this))
+                checkClass($(this));
             } else {
                 if (!userId) {
-                    checkLogin()
+                    checkLogin();
                 } else if (!type) {
-                    alert('未获取到组织信息！');
+                    showModal('未获取到组织信息！');
                 }
             }
         } else if ($(this).hasClass('hasGov')) {
             if (type === '1') {
-                checkClass($(this))
+                checkClass($(this));
             } else {
-                alert('请选择政府组织！');
+                showModal('请选择政府组织！');
             }
         } else if ($(this).hasClass('hasFarm')) {
             if (type === '2') {
-                checkClass($(this))
+                checkClass($(this));
             } else {
-                alert('请选择农场组织！');
+                showModal('请选择农场组织！');
             }
         } else if ($(this).hasClass('hasLogin')) {
             if (userId) {
-                checkClass($(this))
+                checkClass($(this));
             } else {
-                checkLogin()
+                checkLogin();
             }
         } else {
-            checkClass($(this))
+            checkClass($(this));
         }
     });
 
     // webview
     $("body").on('click', '.goWebview', function () {
         if ($(this).hasClass('goWeather')) {    // 天气
-            var webUrl = 'http://121.40.249.208/web/weather.html?userId=' + userId;
+            var webUrl = baseUrl + "?userId=" + userId;
             if ($.os.ios) {
                 var iosJson = {
-                    class: 'bxProcessesViewController',
+                    class: 'weatherWebViewController',
                     typeIndex: '',
                     htmlUrl: webUrl
                 };
@@ -486,16 +500,16 @@
             if ($.os.ios) {
                 if ($(this).hasClass('iosWebview')) {   // 知识库
                     var iosJson = {
-                        class: 'bxProcessesViewController',
+                        class: 'weatherWebViewController',
                         typeIndex: '1',
-                        htmlUrl: 'https://webapp.snzfnm.com/webapp/encyclopedia/listchannel.html?type=1'
+                        htmlUrl: articleUrl + 'encyclopedia/listchannel.html?type=1'
                     };
                     window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
                 } else {    // 百科学堂
                     var iosJson = {
                         class: 'encyclopediaDetailViewController',
                         typeIndex: '1',
-                        htmlUrl: 'https://webapp.snzfnm.com/webapp/encyclopedia/index.html'
+                        htmlUrl: articleUrl + 'encyclopedia/index.html'
                     };
                     window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
                 }
@@ -512,29 +526,50 @@
         if ($.os.ios) {
             // ios
             var iosJson = {
-                class: 'bxProcessesViewController',
+                class: 'weatherWebViewController',
                 typeIndex: '1',
                 htmlUrl: $(this).attr('data-url')
             };
             window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
         } else {
             // android
-            var androidClass = $(this).attr('data-androidClass')
-            var webUrl = $(this).attr('data-url')
-            method.jumpStrAct(androidClass, webUrl, '质量追溯')
+            var androidClass = $(this).attr('data-androidClass');
+            var webUrl = $(this).attr('data-url');
+            method.jumpStrAct(androidClass, webUrl, '质量追溯');
         }
     });
+    // 是否安装
+    function checkInstall() {
+        if ($.os.ios) {
+            var iosJson = {
+                class: 'weatherWebViewController',
+                typeIndex: '1',
+                htmlUrl: htmlUrl + 'njyList.html'
+            };
+            window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
+        } else {
+            // android
+            var androidClass = 'com.shenlong.newframing.actys.WebUrlWebViewActivity';
+            var webUrl = htmlUrl + 'njyList.html';
+            method.jumpStrAct(androidClass, webUrl, '农技耘');
+        }
+    }
+    // 返回包名
+    function checkPackage() {
+        return 'nongjiyun';
+    }
 
     $("body").on('click', '.goApp', function () {
         if ($.os.ios) {
             // ios
-            alert('ios')
-            // window.webkit.messageHandlers.toWeatherMap.postMessage(null)
+            var packageName = checkPackage();
+            window.webkit.messageHandlers.tonjy.postMessage(packageName);
         } else {
             // android
             method.jumpApp('com.ureading.sunongtong');
         }
     });
+
 
 </script>
 </body>

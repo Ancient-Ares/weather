@@ -1,15 +1,17 @@
-var baseUrl = 'http://121.40.249.208:8080/weather/app/';
-// var baseUrl = 'http://192.168.1.122:8080/weather/app/';
+var baseUrl = 'https://weather.snzfnm.com/weather/app/';
+// var baseUrl = 'http://192.168.1.113:8080/weather/app/';
+
+var htmlUrl = 'https://weather.snzfnm.com/weather/';
 
 var articleUrl = 'https://webapp.snzfnm.com/webapp/';
 // var articleUrl = 'https://192.168.1.127:8443/webapp/';
+// var articleUrl = 'http://192.168.1.220:8090/webapp/';
 
 // 判断 ios | android | wechat
 (function ($, window) {
     function detect(ua) {
         this.os = {};
         var funcs = [
-
             function () { //wechat
                 var wechat = ua.match(/(MicroMessenger)\/([\d\.]+)/i);
                 if (wechat) { //wechat
@@ -24,7 +26,6 @@ var articleUrl = 'https://webapp.snzfnm.com/webapp/';
                 if (android) {
                     this.os.android = true;
                     this.os.version = android[2];
-
                     this.os.isBadAndroid = !(/Chrome\/\d/.test(window.navigator.appVersion));
                 }
                 return this.os.android === true;
@@ -49,21 +50,21 @@ var articleUrl = 'https://webapp.snzfnm.com/webapp/';
         });
     }
 
-    detect.call($, navigator.userAgent)
+    detect.call($, navigator.userAgent);
 })($, window);
 
 function routerBack() {
-    window.history.go(-1)
+    window.history.go(-1);
 }
 $(".goBack").click(function () {
     if ($.os.ios) {
         // ios
-        window.webkit.messageHandlers.toback.postMessage(null)
+        window.webkit.messageHandlers.toback.postMessage(null);
     } else {
         // android
-        toback.back()
+        toback.back();
     }
 })
 $(".back").click(function(){
-    routerBack()
+    routerBack();
 })

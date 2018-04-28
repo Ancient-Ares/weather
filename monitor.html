@@ -155,7 +155,7 @@
     <div class="chartBox">
         <div id="container" style="height:350px; width: 100%"></div>
     </div>
-    <div class="line"> 数据实况 <span>2018年4月13日更新</span></div>
+    <div class="line updateTime"> 数据实况 <span></span></div>
     <div class="dataLive">
         <div class="live1">
             <img src="images/live1.png">
@@ -334,26 +334,27 @@
             },
             success: function (data) {
                 if (data.status === 'true') {
-                    $(".live1 .span2").text(data.airTem3)
-                    $(".live2 .span2").text(data.airHum3)
-                    $(".live3 .span2").text(data.co2)
-                    $(".live4 .span2").text(data.soilTem3)
-                    $(".live5 .span2").text(data.soilHum3)
-                    $(".live6 .span2").text(data.lightRad)
-                    $(".live7 .span2").text(data.sunRad)
-                    timeArr = data.timeArry
-                    data1 = data.airTem1Arry
-                    data12 = data.airTem2Arry
-                    data13 = data.airTem3Arry
-                    data2 = data.airHum1Arry
-                    data22 = data.airHum2Arry
-                    data23 = data.airHum3Arry
-                    data3 = data.soilTem1Arry
-                    data32 = data.soilTem2Arry
-                    data33 = data.soilTem3Arry
-                    data4 = data.soilHum1Arry
-                    data42 = data.soilHum2Arry
-                    data43 = data.soilHum3Arry
+                    $(".updateTime span").text(data.createTime + ' 更新');
+                    $(".live1 .span2").text(data.airTem3);
+                    $(".live2 .span2").text(data.airHum3);
+                    $(".live3 .span2").text(data.co2);
+                    $(".live4 .span2").text(data.soilTem3);
+                    $(".live5 .span2").text(data.soilHum3);
+                    $(".live6 .span2").text(data.lightRad);
+                    $(".live7 .span2").text(data.sunRad);
+                    timeArr = data.timeArry;
+                    data1 = data.airTem1Arry;
+                    data12 = data.airTem2Arry;
+                    data13 = data.airTem3Arry;
+                    data2 = data.airHum1Arry;
+                    data22 = data.airHum2Arry;
+                    data23 = data.airHum3Arry;
+                    data3 = data.soilTem1Arry;
+                    data32 = data.soilTem2Arry;
+                    data33 = data.soilTem3Arry;
+                    data4 = data.soilHum1Arry;
+                    data42 = data.soilHum2Arry;
+                    data43 = data.soilHum3Arry;
                     if (whice === 1) {
                         trData1 = data1;
                         trData2 = data12;
@@ -371,9 +372,9 @@
                         trData2 = data42;
                         trData3 = data43;
                     }
-                    drawCanvas(options, timeArr, trData1, trData2, trData3)
+                    drawCanvas(options, timeArr, trData1, trData2, trData3);
                 } else {
-                    alert(data.msg)
+                    alert(data.msg);
                 }
             },
             error: function (xhr, type) {
@@ -383,7 +384,7 @@
     }
 
     window.onload = function () {
-        getWeatherData(temOptions, 1, 1)
+        getWeatherData(temOptions, 1, 1);
     }
     var siteId = 1;
     $(".fourBtn button").each(function (index) {
@@ -399,7 +400,7 @@
                         name2: '中层空气温度',
                         name3: '下层空气温度'
                     }
-                    getWeatherData(temOptions, siteId, 1)
+                    getWeatherData(temOptions, siteId, 1);
                 } else if (index === 1) {
                     var temOptions = {
                         title: '空气湿度折线图',
@@ -407,7 +408,7 @@
                         name2: '中层空气湿度',
                         name3: '下层空气湿度'
                     }
-                    getWeatherData(temOptions, siteId, 2)
+                    getWeatherData(temOptions, siteId, 2);
                 } else if (index === 2) {
                     var temOptions = {
                         title: '土壤温度折线图',
@@ -415,7 +416,7 @@
                         name2: '10cm土壤温度',
                         name3: '20cm土壤温度'
                     }
-                    getWeatherData(temOptions, siteId, 3)
+                    getWeatherData(temOptions, siteId, 3);
                 } else {
                     var temOptions = {
                         title: '土壤湿度折线图',
@@ -423,7 +424,7 @@
                         name2: '10cm土壤湿度',
                         name3: '20cm土壤湿度'
                     }
-                    getWeatherData(temOptions, siteId, 4)
+                    getWeatherData(temOptions, siteId, 4);
                 }
             }
         })
@@ -436,21 +437,21 @@
             if (className.search('active') === -1) {
                 $(this).addClass('active');
                 $(this).siblings().removeClass('active');
-                var fNum = $(".fourBtn .active").attr('class').toString().substring(4, 5)
+                var fNum = $(".fourBtn .active").attr('class').toString().substring(4, 5);
                 if (index === 0) {
-                    $(".tab > div").eq(0).addClass('active')
-                    $(".tab > div").eq(1).removeClass('active')
-                    $(".whice1").attr('class', 'whice whice1 active')
-                    $(".whice2").removeClass('active')
-                    siteId = 1
-                    getWeatherData(temOptions, 1, fNum)
+                    $(".tab > div").eq(0).addClass('active');
+                    $(".tab > div").eq(1).removeClass('active');
+                    $(".whice1").attr('class', 'whice whice1 active');
+                    $(".whice2").removeClass('active');
+                    siteId = 1;
+                    getWeatherData(temOptions, 1, fNum);
                 } else {
-                    $(".tab > div").eq(1).addClass('active')
-                    $(".tab > div").eq(0).removeClass('active')
-                    $(".whice3").attr('class', 'whice whice3 active')
-                    $(".whice4").removeClass('active')
-                    siteId = 5
-                    getWeatherData(temOptions, 5, fNum)
+                    $(".tab > div").eq(1).addClass('active');
+                    $(".tab > div").eq(0).removeClass('active');
+                    $(".whice3").attr('class', 'whice whice3 active');
+                    $(".whice4").removeClass('active');
+                    siteId = 5;
+                    getWeatherData(temOptions, 5, fNum);
                 }
             }
         })
@@ -465,16 +466,16 @@
                 $(this).siblings().removeClass('active');
                 if (index === 0) {
                     siteId = 1
-                    getWeatherData(temOptions, siteId, index + 1)
+                    getWeatherData(temOptions, siteId, index + 1);
                 } else if (index === 1) {
                     siteId = 2
-                    getWeatherData(temOptions, siteId, index + 1)
+                    getWeatherData(temOptions, siteId, index + 1);
                 } else if (index === 2) {
                     siteId = 5
-                    getWeatherData(temOptions, siteId, index + 1)
+                    getWeatherData(temOptions, siteId, index + 1);
                 } else {
                     siteId = 7
-                    getWeatherData(temOptions, siteId, index + 1)
+                    getWeatherData(temOptions, siteId, index + 1);
                 }
             }
         })
