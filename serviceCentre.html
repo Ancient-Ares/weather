@@ -382,14 +382,15 @@
 
     // 移动端  url - userID
     //组织类型  0-社会化 1-政府 2-农场 空-无组织
+
     var url = window.location.href.split('?');
-    if (url.length < 2) {
-        var userId = '';
-        var type = '';
+    var splitUrl = url[1].split('&');
+    var userId = splitUrl[0].split('=')[1] || '';
+    var type = splitUrl[1].split('=')[1] || '';
+    if (userId == '') {
+        localStorage.removeItem('userId');
     } else {
-        var splitUrl = url[1].split('&');
-        var userId = splitUrl[0].split('=')[1] || '';
-        var type = splitUrl[1].split('=')[1] || '';
+        localStorage.setItem('userId', userId);
     }
 
     // 公共方法
@@ -484,7 +485,7 @@
     // webview
     $("body").on('click', '.goWebview', function () {
         if ($(this).hasClass('goWeather')) {    // 天气
-            var webUrl = baseUrl + "?userId=" + userId;
+            var webUrl = htmlUrl + "weather.html?userId=" + userId;
             if ($.os.ios) {
                 var iosJson = {
                     class: 'weatherWebViewController',
@@ -538,12 +539,13 @@
             method.jumpStrAct(androidClass, webUrl, '质量追溯');
         }
     });
-    // 是否安装
+
+    // 未安装农技耘 原生调用的方法
     function checkInstall() {
         if ($.os.ios) {
             var iosJson = {
                 class: 'weatherWebViewController',
-                typeIndex: '1',
+                typeIndex: '',
                 htmlUrl: htmlUrl + 'njyList.html'
             };
             window.webkit.messageHandlers.toViewContro.postMessage(iosJson);
@@ -551,9 +553,10 @@
             // android
             var androidClass = 'com.shenlong.newframing.actys.WebUrlWebViewActivity';
             var webUrl = htmlUrl + 'njyList.html';
-            method.jumpStrAct(androidClass, webUrl, '农技耘');
+            method.jumpStrAct(androidClass, webUrl, '');
         }
     }
+
     // 返回包名
     function checkPackage() {
         return 'nongjiyun';

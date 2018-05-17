@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>灾情直报</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/mescroll.min.css">
     <style>
         * {
             margin: 0;
@@ -17,8 +20,11 @@
         }
 
         body {
-            background-color: #f5f5f5;
             font-size: 1.2em;
+        }
+
+        .headerBox {
+            height: 40px;
         }
 
         .header {text-align: center;line-height: 40px;position: fixed;top: 0;left: 0;width: 100%;z-index: 10;border-bottom: 1px #ccc solid; background: #00ae68;color: #fff;font-size: 16px;}
@@ -47,21 +53,22 @@
         }
 
         .content {
-            padding: 40px 0 0 0;
+            margin-top: 40px;
             max-width: 640px;
+            height: 100%;
             margin: 0 auto;
             background-color: #fff;
         }
 
         .lists {
             width: 100%;
-            height: 100%;
             column-count: 2;
             column-gap: 0;
             counter-reset: item-counter;
             position: relative;
             overflow: hidden;
         }
+
         .content .item {
             box-sizing: border-box;
             -webkit-column-break-inside: avoid;
@@ -96,12 +103,13 @@
             box-sizing: border-box;
             padding: 0 5px;
         }
-        .content .item h3 p {overflow: auto;text-align: right;margin:5px 0;}
+
+        .content .item h3 p {overflow: auto;text-align: right;margin: 5px 0;}
 
         .content .item .date {
             display: block;
             text-align: right;
-            margin:5px 0;
+            margin: 5px 0;
         }
 
         .opacity {
@@ -127,66 +135,10 @@
             }
         }
 
-        .dropload-up, .dropload-down {
-            position: relative;
-            height: 0;
-            overflow: hidden;
-            font-size: 12px;
-            /* 开启硬件加速 */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-
-        .dropload-down {
-            height: 50px;
-        }
-
-        .dropload-refresh, .dropload-update, .dropload-load, .dropload-noData {
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-        }
-
-        .dropload-load .loading {
-            display: inline-block;
-            height: 15px;
-            width: 15px;
-            border-radius: 100%;
-            margin: 6px;
-            border: 2px solid #666;
-            border-bottom-color: transparent;
-            vertical-align: middle;
-            -webkit-animation: rotate 0.75s linear infinite;
-            animation: rotate 0.75s linear infinite;
-        }
-
-        @-webkit-keyframes rotate {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-            50% {
-                -webkit-transform: rotate(180deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            50% {
-                transform: rotate(180deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .upVideo {position: absolute; top: 0; right: 0;outline: none;height: 40px;line-height: 40px;width: 70px;border: none;background: transparent;color: #f0ffdc;font-size: 16px;display: none;}
 
         .clearfixed:after {content: ".";display: block;height: 0;clear: both;visibility: hidden}
+
         .modal { display: none; position: fixed;top: 0;left: 0;height: 100%;width: 100%; background: rgba(0, 0, 0, .3); text-align: center; font-size: 14px;overflow: hidden;color: #333;z-index: 999;}
 
         .modal-box {position: absolute;width: 80%; height: 120px; left: 10%; top: 50%; margin-top: -100px; z-index: 10;background: rgba(255, 255, 255, .99);border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, .2); }
@@ -214,15 +166,25 @@
         }
     </style>
 </head>
+
 <body>
-<div class="header">
-    <span class="back"></span>
-    <span>灾情直报</span>
-    <button class="upVideo">发布</button>
+<!--标题-->
+<div class="headerBox">
+
+    <div class="header">
+        <span class="back"></span>
+        <span>灾情直报</span>
+        <button class="upVideo">发布</button>
+    </div>
 </div>
-<div class="content clearfixed">
-    <div class="lists"></div>
+
+<!--滑动区域-->
+<div id="mescroll" class="mescroll content">
+    <div id="emptyShow"></div>
+    <ul id="newsList" class="news-list lists">
+    </ul>
 </div>
+
 
 <div class="modal">
     <div class="modal-box">
@@ -234,8 +196,10 @@
         </div>
     </div>
 </div>
+</body>
+
+<script src="js/mescroll.min.js"></script>
 <script src="js/zepto.min.js"></script>
-<script src="js/dropload.min.js"></script>
 <script src="js/base.js"></script>
 <script>
     $(".modal").click(function () {
@@ -252,96 +216,141 @@
     }
 
     $(function () {
+        // userId
         var userId = localStorage.getItem('userId') || ''
-        if(userId && userId !== 'undefind') {
-            $(".upVideo").css("display","block")
+        if (userId && userId !== 'undefind') {
+            $(".upVideo").css("display", "block")
         }
-        // 页数
-        var page = 1;
-        // 每页展示 10 个
-        var size = 10;
+        //创建MeScroll对象
+        var mescroll = new MeScroll("mescroll", {
+            down: {
+                use: false
+            },
+            up: {
+                // auto: true, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+                callback: upCallback, //上拉回调,此处可简写; 相当于 callback: function (page) { upCallback(page); }
+                noMoreSize: 4, // 如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+                clearEmptyId: 'emptyShow',
+                empty: {
+                    icon: "img/mescroll-empty.png", // 图标,默认null
+                    tip: "暂无相关数据~", // 提示
+                    btntext: "返回上一页 >", // 按钮,默认""
+                    btnClick: function () {// 点击按钮的回调,默认null
+                        history.go(-1);
+                    }
+                },
+                toTop: { //配置回到顶部按钮
+                    src: "img/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    //offset : 1000
+                }
+            }
+        });
 
-        // dropload
-        $('.content').dropload({
-            scrollArea: window,
-            loadDownFn: function (me) {
-                // 拼接HTML
-                var result = '';
+        /*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+        function upCallback(page) {
+            //联网加载数据
+            getListDataFromNet(page.num, page.size, function (curPageData, total) {
+                //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+                //mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+                // console.log("page.num=" + page.num + ", page.size=" + page.size + ", curPageData.length=" + curPageData.length);
+
+                //方法一(推荐): 后台接口有返回列表的总页数 totalPage
+                mescroll.endByPage(curPageData.length, total); //必传参数(当前页的数据个数, 总页数)
+
+                //方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+                //mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+                //方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+                //mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+
+                //方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+                // mescroll.endSuccess(curPageData.length);
+
+                //设置列表数据
+                setListData(curPageData, true);
+            }, function () {
+                showModal('网络错误，请稍后再试！')
+                //联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+                mescroll.endErr();
+            });
+        }
+
+        /*设置列表数据*/
+        function setListData(curPageData, isAppend) {
+            var listDom = $("#newsList"), inner = '';
+            for (var i = 0; i < curPageData.length; i++) {
+                var newObj = curPageData[i];
+                if (newObj.imgPaths.length > 0) {
+                    var imgView = newObj.imgPaths[0]
+                } else {
+                    var imgView = newObj.videoPaths[0] + '?vframe/jpg/offset/1'
+                }
+                inner = `<a class="item opacity" href="videoDetail.html?id=${newObj.disasterId}">
+                            <img src="${imgView}" onerror="src='images/noImg.png'">
+                            <h3>
+                                <p>${newObj.address}</p>
+                                <span class="date">${newObj.updateTime}</span>
+                            </h3>
+                        </a>`;
+
+                if (isAppend) {
+                    listDom.append(inner);//加在列表的后面,上拉加载
+                } else {
+                    listDom.before(inner, listDom.firstChild);//加在列表的前面,下拉刷新
+                }
+            }
+        }
+
+        /*联网加载列表数据
+         实际项目以您服务器接口返回的数据为准,无需本地处理分页.
+         * */
+        var downIndex = 0;
+
+        function getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+            //延时一秒,模拟联网
+            setTimeout(function () {
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: baseUrl + 'disaster/pageDisasterWeather.do',
                     dataType: 'json',
                     data: {
                         areaCode: '3212',
                         userId: '',
                         withPics: true,
-                        pageNo: page,
-                        pageSize: size
+                        pageNo: pageNum,
+                        pageSize: pageSize
                     },
                     success: function (data) {
-                        if (data.status === 'true') {
-                            var data = data.data.rows;
-                            var inner = '';
+                        var listData = [], total = data.data.total, data = data.data.rows;
+                        // 数据
+                        if (pageNum * pageSize - 10 <= total) {
                             for (var i = 0, lens = data.length; i < lens; i++) {
-                                if (data[i].imgPaths.length > 0) {
-                                    var imgView = data[i].imgPaths[0]
-                                } else {
-                                    var imgView = data[i].videoPaths[0] + '?vframe/jpg/offset/1'
-                                }
-                                inner += `<a class="item opacity" onclick="setStoage($(this))" data-disasterId="${data[i].disasterId}" href="videoDetail.html">
-                                            <img src="${imgView}" onerror="src='images/noImg.png'">
-                                            <h3>
-                                                <p>${data[i].address}</p>
-                                                <span class="date">${data[i].updateTime}</span>
-                                            </h3>
-                                        </a>`
+                                listData.push(data[i]);
                             }
-                            if (data.length < 10) {
-                                // 锁定
-                                me.lock();
-                                // 无数据
-                                me.noData();
-                            } else {
-                                page++;
-                            }
-                            $('.lists').append(inner);
-                            me.resetload();
                         } else {
-                            showModal(data.msg);
-                            // 锁定
-                            me.lock();
-                            // 无数据
-                            me.noData();
-                            me.resetload();
+                            return false
                         }
+
+                        // 回调
+                        successCallback(listData, total);
                     },
-                    error: function (xhr, type) {
-                        showModal('网络错误!');
-                        // 即使加载出错，也得重置
-                        me.lock();
-                        // 无数据
-                        me.noData();
-                        me.resetload();
-                    }
-                })
+                    error: errorCallback
+                });
+            }, 200)
+        }
+
+        $(".upVideo").click(function () {
+            if ($.os.ios) {
+                // ios
+                window.webkit.messageHandlers.toPubWeather.postMessage(null);
+            } else {
+                // android
+                toback.toPubWeather();
             }
         })
-    })
 
-    $(".upVideo").click(function () {
-        if ($.os.ios) {
-            // ios
-            window.webkit.messageHandlers.toPubWeather.postMessage(null);
-        } else {
-            // android
-            toback.toPubWeather();
-        }
-    })
-
-    function setStoage(that) {
-        var disasterid = that.attr('data-disasterid');
-        localStorage.setItem('disasterid', disasterid);
-    }
+    });
 </script>
-</body>
+
 </html>

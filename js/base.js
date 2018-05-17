@@ -1,11 +1,14 @@
 var baseUrl = 'https://weather.snzfnm.com/weather/app/';
-// var baseUrl = 'http://192.168.1.113:8080/weather/app/';
+// var baseUrl = 'http://192.168.1.114:8080/weather/app/';
 
-var htmlUrl = 'https://weather.snzfnm.com/weather/';
+var htmlUrl = 'https://weather.snzfnm.com/web/';
 
 var articleUrl = 'https://webapp.snzfnm.com/webapp/';
 // var articleUrl = 'https://192.168.1.127:8443/webapp/';
 // var articleUrl = 'http://192.168.1.220:8090/webapp/';
+
+var njyUrl = 'https://njy.jsnjy.net.cn/region/';
+var njyImgUrl = 'http://object.jsnjy.net.cn';
 
 // 判断 ios | android | wechat
 (function ($, window) {

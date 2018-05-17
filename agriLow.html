@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>农业执法</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <style>
+        * {-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0;padding: 0;}
+
+        html {width: 100%;height: 100%;margin: 0px;padding: 0px;-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);font-size: 14px;color: #333;}
+
+        body {width: 100%;height: 100%;-webkit-overflow-scrolling: touch;}
+
+        img, a {-webkit-touch-callout: none;}
+
+        a, a:active, a:hover {text-decoration: none;}
+
+        a, button, input, textarea {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+
+        .topContent {text-align: center;}
+        .topContent .firstBanner {background: #00689C;}
+        .topContent h1 {font-size: 18px;color:#fff;padding: 20px 0;}
+        .firstBanner img {width: 74px;}
+        .topContent .bannerItem{float:left;width: 33.33%;overflow: hidden;padding:10px 0;}
+        .topContent .bannerItem p{padding:5px 0;color:#fff;font-size: 16px;}
+        .secondBanner {position: relative}
+        .secondBanner img {width: 100%;}
+        .secondBanner p {position: absolute;top:50%;left:0;width: 100%;height: 20px;line-height: 20px;margin-top:-10px;color: #ff0000;font-size: 18px;}
+        .title-line {position: relative;height: 40px;line-height: 40px;padding-left: 25px;font-weight: 700;font-size: 16px;color: #000;}
+
+        .title-line:before {content: ' ';position: absolute;top: 12px;left: 10px;height: 16px;width: 4px;background: #198fe6;}
+
+        .zfBox {margin-bottom: 30px;color: #000;}
+
+        .zf {overflow: hidden;_zoom: 1;}
+
+        .zfItem {float: left;width: 25%;height: 60px;text-align: center;margin-top: 15px;cursor: pointer; }
+
+        .zfItem .imgBox {height: 36px;line-height: 36px;}
+
+        .zfItem .imgBox img {width: 32px;vertical-align: middle;}
+
+        .zfItem p {margin-top: 8px;font-size: 12px;}
+
+        .modal { display: none; position: fixed;top: 0;left: 0;height: 100%;width: 100%; background: rgba(0, 0, 0, .3); text-align: center; font-size: 14px;overflow: hidden;color: #333;z-index: 999;}
+
+        .modal-box {position: absolute;width: 80%; height: 120px; left: 10%; top: 50%; margin-top: -100px; z-index: 10;background: rgba(255, 255, 255, .99);border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, .2); }
+
+        .modal-content {height: 80px;padding: 20px 0;line-height: 40px;box-sizing: border-box;position: relative}
+
+        .modal-header:after, .modal-content:after {content: '';width: 100%;height: 1px;position: absolute;left: 0;bottom: 0;transform: scaleY(.5); background-color: #ddd;}
+
+        .modal-confirm {height: 40px;line-height: 40px;cursor: pointer;color: #007aff;}
+
+        .modal.fadeIn {display: block;}
+
+        .modal.fadeIn .modal-box { -webkit-animation: fadeIn 0.7s cubic-bezier(0.7, 0, 0.3, 1); animation: fadeIn 0.7s cubic-bezier(0.7, 0, 0.3, 1); }
+
+        .modal.fadeOut .modal-box { -webkit-animation: fadeOut 0.7s cubic-bezier(0.7, 0, 0.3, 1); animation: fadeOut 0.7s cubic-bezier(0.7, 0, 0.3, 1); }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(-200px) perspective(500px) rotateX(40deg); }
+            100% { opacity: 1; transform: scale(1) translateY(0) perspective(500px) rotateX(0); }
+        }
+
+        @-webkit-keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1) translateY(0) perspective(500px) rotateX(0); }
+            100% { opacity: 0; transform: scale(0.8) translateY(-200px) perspective(500px) rotateX(40deg); }
+        }
+        .clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden}
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="topContent">
+        <div class="firstBanner">
+            <h1>农业综合执法平台</h1>
+            <div class="bannerBox clearfix">
+                <div class="bannerItem">
+                    <div class="imgBox">
+                        <img src="img/zf1.png">
+                    </div>
+                    <p>综合执法</p>
+                </div>
+                <div class="bannerItem">
+                    <div class="imgBox">
+                        <img src="img/zf2.png">
+                    </div>
+                    <p>动监执法</p>
+                </div>
+                <div class="bannerItem">
+                    <div class="imgBox">
+                        <img src="img/zf3.png">
+                    </div>
+                    <p>渔政执法</p>
+                </div>
+            </div>
+        </div>
+        <div class="secondBanner">
+            <div class="imgBox">
+                <img src="img/zfBanner.png">
+            </div>
+            <p>依法行政 文明执法</p>
+        </div>
+    </div>
+    <div class="zfBox">
+        <div class="title-line">种植类执法</div>
+        <div class="zf">
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav1.png">
+                </div>
+                <p>种子</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav2.png">
+                </div>
+                <p>农药</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav3.png">
+                </div>
+                <p>化肥</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav4.png">
+                </div>
+                <p>转基因</p>
+            </div>
+        </div>
+    </div>
+    <div class="zfBox">
+        <div class="title-line">畜牧类执法</div>
+        <div class="zf">
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav5.png">
+                </div>
+                <p>兽医</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav6.png">
+                </div>
+                <p>兽药</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav7.png">
+                </div>
+                <p>饲料</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav8.png">
+                </div>
+                <p>动物卫生</p>
+            </div>
+        </div>
+    </div>
+    <div class="zfBox">
+        <div class="title-line">水产类执法</div>
+        <div class="zf">
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav9.png">
+                </div>
+                <p>水产</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav10.png">
+                </div>
+                <p>渔业</p>
+            </div>
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav11.png">
+                </div>
+                <p>渔政</p>
+            </div>
+        </div>
+    </div>
+    <div class="zfBox">
+        <div class="title-line">农机类执法</div>
+        <div class="zf">
+            <div class="zfItem goTarget">
+                <div class="imgBox">
+                    <img src="img/zfNav12.png">
+                </div>
+                <p>农机</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            <p></p>
+        </div>
+        <div class="modal-confirm">
+            <p>确定</p>
+        </div>
+    </div>
+</div>
+
+<script src="js/zepto.min.js"></script>
+<script src="js/base.js"></script>
+<script>
+
+    $(".modal").click(function () {
+        $(".modal").addClass('fadeOut');
+        var timer = setTimeout(function () {
+            $(".modal").attr('class', 'modal')
+        }, 300);
+        timer = null;
+    })
+
+    function showModal(content) {
+        $(".modal-content p").html(content);
+        $(".modal").addClass('fadeIn');
+    }
+
+    $("body").on('click', '.goTarget', function(){
+        showModal('对不起，您暂无此功能使用权限！')
+    })
+
+</script>
+</body>
+</html>

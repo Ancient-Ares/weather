@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详情</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-text-size-adjust: none;
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            background-color: #fff;
+            font-size: 1.2em;
+        }
+
+        .header {text-align: center;line-height: 40px;position: fixed;top: 0;left: 0;width: 100%;z-index: 10;border-bottom: 1px #ccc solid; background: #00ae68;color: #fff;font-size: 16px;}
+
+        .header .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 40px;
+            width: 40px;
+        }
+
+        .header .back:after {
+            content: " ";
+            height: 10px;
+            width: 10px;
+            border-width: 2px 2px 0 0;
+            border-color: #fff;
+            border-style: solid;
+            -webkit-transform: matrix(-.71, .71, .71, .71, 0, 0);
+            transform: matrix(-.71, .71, .71, .71, 0, 0);
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            margin-top: -6px;
+        }
+
+        .main {margin-top: 40px; padding: 5px 15px 20px 15px;min-height: 600px;}
+
+        .title {margin: 10px 0 20px 0;font-size: 18px;}
+
+        .dropDown {width: 100%;}
+
+        .dropDown .imgBox {font-size: 0;position: relative;cursor: pointer;}
+
+        .dropDown .closeDown {content: '×';position: absolute;right: 6px;top: 4px;width: 26px;height: 26px;background: #91bd25;color: #fff;font-size: 28px;line-height: 22px;text-align: center;font-weight: 300;display: block;}
+
+        .dropDown .imgBox img {width: 100%}
+
+        .dataInfo {font-size: 14px;height: 30px;font-weight: 600;}
+
+        .left {float: left;}
+
+        .right {float: right;}
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="back"></span>
+    <span>详情</span>
+</div>
+<div class="main">
+    <h2 class="title"></h2>
+    <div class="dataInfo">
+        <div class="left">来源：<span></span></div>
+        <div class="right">日期：<span></span></div>
+    </div>
+    <div class="content">
+
+    </div>
+</div>
+<div class="dropDownBox">
+    <div class="dropDown">
+        <div class="imgBox">
+            <img src="images/downNjy.png" alt="下载农技耘">
+            <div class="closeDown">×</div>
+        </div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/dropload.min.js"></script>
+<script src="js/base.js"></script>
+<script>
+    // 移动端  url - userID
+    //组织类型  0-社会化 1-政府 2-农场 空-无组织
+    var url = window.location.href.split('?');
+    var newId = url[1].split('=')[1] || '';
+    var userId = localStorage.getItem('userId') || '';
+
+    Date.prototype.format = function (fmt) {
+        var year = this.getFullYear();
+        var month = this.getMonth() + 1;
+        var date = this.getDate();
+        var hour = this.getHours();
+        var minute = this.getMinutes();
+        var second = this.getSeconds();
+
+        fmt = fmt.replace("yyyy", year);
+        fmt = fmt.replace("yy", year % 100);
+        fmt = fmt.replace("MM", fix(month));
+        fmt = fmt.replace("dd", fix(this.getDate()));
+        fmt = fmt.replace("hh", fix(this.getHours()));
+        fmt = fmt.replace("mm", fix(this.getMinutes()));
+        fmt = fmt.replace("ss", fix(this.getSeconds()));
+
+        return fmt;
+
+        function fix(n) {
+            return n < 10 ? "0" + n : n;
+        }
+    };
+
+    $('body').on('click', '.imgBox img', function () {
+        if ($.os.ios) {
+            // 农技耘id = '1173309739'
+            var downUrl = '1173309739';
+            window.webkit.messageHandlers.toDownnjy.postMessage(downUrl);
+        } else {
+            method.downloadApp('com.ureading.sunongtong');
+        }
+    });
+
+    $('body').on('click', '.closeDown', function () {
+        $(".dropDownBox").hide();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: njyUrl + 'news/newsDetails.action',
+        dataType: 'json',
+        timeout: 10000,
+        data: {
+            userId: userId,
+            appId: 'NMW',
+            newId: newId
+        },
+        success: function (data) {
+            if (data.code === 0) {
+                var data = data.data;
+                $(".title").text(data.newsTitle);
+                $(".dataInfo .left span").text(data.newsFrom);
+                $(".dataInfo .right span").text(new Date(data.updateTime).format("yyyy-MM-dd hh:mm"));
+                $(".content").html(data.newsContext);
+
+            } else {
+                showModal(data.msg);
+            }
+        },
+        error: function (err) {
+            showModal('请求失败，稍后再试!');
+        }
+    });
+</script>
+</body>
+</html>

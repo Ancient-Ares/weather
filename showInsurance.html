@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>保险展示</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {background-color: #fff;}
+
+        .headerBox {
+            height: 40px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            background: #00ae68;
+        }
+
+        .topTitle {text-align: center;line-height: 40px;width: 100%; background: #00ae68;color: #fff;font-size: 16px;}
+
+        .topTitle .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 40px;
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .topTitle .back:after {
+            content: " ";
+            height: 10px;
+            width: 10px;
+            border-width: 2px 2px 0 0;
+            border-color: #fff;
+            border-style: solid;
+            -webkit-transform: matrix(-.71, .71, .71, .71, 0, 0);
+            transform: matrix(-.71, .71, .71, .71, 0, 0);
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            margin-top: -6px;
+        }
+
+        .main {
+            font-size: 0;
+        }
+
+        .main img {margin-top: 0px;width: 100%}
+    </style>
+</head>
+<body>
+<div class="headerBox">
+    <div class="header">
+        <div class="topTitle">
+            <span class="back"></span>
+            <span>农业保险</span>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <img src="images/insurance.png" alt="农业保险">
+</div>
+<script src="js/zepto.min.js"></script>
+<script>
+    // 判断 ios | android | wechat
+    (function ($, window) {
+        function detect(ua) {
+            this.os = {};
+            var funcs = [
+                function () { //wechat
+                    var wechat = ua.match(/(MicroMessenger)\/([\d\.]+)/i);
+                    if (wechat) { //wechat
+                        this.os.wechat = {
+                            version: wechat[2].replace(/_/g, '.')
+                        };
+                    }
+                    return false;
+                },
+                function () { //android
+                    var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+                    if (android) {
+                        this.os.android = true;
+                        this.os.version = android[2];
+                        this.os.isBadAndroid = !(/Chrome\/\d/.test(window.navigator.appVersion));
+                    }
+                    return this.os.android === true;
+                },
+                function () { //ios
+                    var iphone = ua.match(/(iPhone\sOS)\s([\d_]+)/);
+                    if (iphone) { //iphone
+                        this.os.ios = this.os.iphone = true;
+                        this.os.version = iphone[2].replace(/_/g, '.');
+                    } else {
+                        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+                        if (ipad) { //ipad
+                            this.os.ios = this.os.ipad = true;
+                            this.os.version = ipad[2].replace(/_/g, '.');
+                        }
+                    }
+                    return this.os.ios === true;
+                }
+            ];
+            [].every.call(funcs, function (func) {
+                return !func.call($);
+            });
+        }
+
+        detect.call($, navigator.userAgent);
+    })($, window);
+
+    $(".back").click(function () {
+        if ($.os.ios) {
+            // ios
+            window.webkit.messageHandlers.toback.postMessage(null);
+        } else {
+            // android
+            toback.back();
+        }
+    })
+
+</script>
+</body>
+</html>
